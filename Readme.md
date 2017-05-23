@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Роман Слонов](https://up.htmlacademy.ru/ecmascript/2/user/40833).
-* Наставник: `Неизвестно`.
+* Наставник: [Вячеслав Мостовой](https://htmlacademy.ru/profile/id169172).
 
 ---
 
