@@ -1,8 +1,7 @@
 export default function getElementFromTemplate(string) {
-  const container = document.createElement(`template`);
-  const stringTemplate = string;
+  const container = document.createElement(`div`);
 
-  container.innerHTML = stringTemplate;
+  container.innerHTML = string;
 
-  return container.content;
+  return container;
 }

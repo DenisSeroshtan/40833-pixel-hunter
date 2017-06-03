@@ -37,11 +37,7 @@ const continueButton = templateRules.querySelector(`.rules__button`);
 const nameInput = templateRules.querySelector(`.rules__input`);
 
 nameInput.addEventListener(`input`, () => {
-  if (nameInput.value.length > 0) {
-    continueButton.disabled = false;
-  } else {
-    continueButton.disabled = true;
-  }
+  continueButton.disabled = nameInput.value.length === 0;
 });
 
 backButton.addEventListener(`click`, () => {
