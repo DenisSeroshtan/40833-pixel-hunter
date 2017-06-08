@@ -1,7 +1,9 @@
 export default function getElementFromTemplate(string) {
-  const container = document.createElement(`div`);
+  const template = document.createElement(`template`);
 
-  container.innerHTML = string;
+  template.innerHTML = string;
 
-  return container;
+  const clone = template.content.cloneNode(true);
+
+  return clone;
 }
