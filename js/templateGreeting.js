@@ -2,7 +2,7 @@ import getElementFromTemplate from './getElementFromTemplate.js';
 import templateRules from './templateRules.js';
 import setActiveScreen from './setActiveScreen.js';
 
-function templateGreeting() {
+export default function templateGreeting() {
   const node = getElementFromTemplate(`
     <div class="greeting central--blur">
       <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
@@ -27,5 +27,3 @@ function templateGreeting() {
 
   return node;
 }
-
-export default templateGreeting;

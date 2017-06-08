@@ -2,7 +2,7 @@ import getElementFromTemplate from './getElementFromTemplate.js';
 import templateGreeting from './templateGreeting.js';
 import setActiveScreen from './setActiveScreen.js';
 
-function templateStats() {
+export default function templateStats() {
   const node = getElementFromTemplate(`
     <header class="header">
       <div class="header__back">
@@ -122,5 +122,3 @@ function templateStats() {
 
   return node;
 }
-
-export default templateStats;

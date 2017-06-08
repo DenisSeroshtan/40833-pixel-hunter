@@ -2,7 +2,7 @@ import getElementFromTemplate from './getElementFromTemplate.js';
 import templateGreeting from './templateGreeting.js';
 import setActiveScreen from './setActiveScreen.js';
 
-function templateIntro() {
+export default function templateIntro() {
   const node = getElementFromTemplate(`
     <div id="intro" class="intro">
       <h1 class="intro__asterisk">*</h1>
@@ -18,5 +18,3 @@ function templateIntro() {
 
   return node;
 }
-
-export default templateIntro;

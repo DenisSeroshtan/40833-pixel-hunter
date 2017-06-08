@@ -3,7 +3,7 @@ import templateGame1 from './templateGame1.js';
 import templateGreeting from './templateGreeting.js';
 import setActiveScreen from './setActiveScreen.js';
 
-function templateRules() {
+export default function templateRules() {
   const node = getElementFromTemplate(`
     <header class="header">
       <div class="header__back">
@@ -49,5 +49,3 @@ function templateRules() {
 
   return node;
 }
-
-export default templateRules;

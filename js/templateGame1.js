@@ -3,7 +3,7 @@ import templateRules from './templateRules.js';
 import templateGame2 from './templateGame2.js';
 import setActiveScreen from './setActiveScreen.js';
 
-function templateGame1() {
+export default function templateGame1() {
   const node = getElementFromTemplate(`
     <header class="header">
       <div class="header__back">
@@ -78,5 +78,3 @@ function templateGame1() {
 
   return node;
 }
-
-export default templateGame1;
