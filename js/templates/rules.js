@@ -1,9 +1,9 @@
-import getElementFromTemplate from './getElementFromTemplate.js';
-import templateGame1 from './templateGame1.js';
-import templateGreeting from './templateGreeting.js';
-import setActiveScreen from './setActiveScreen.js';
+import getElementFromTemplate from '../getElementFromTemplate.js';
+import game1 from './game1.js';
+import greeting from './greeting.js';
+import setActiveScreen from '../setActiveScreen.js';
 
-export default function templateRules() {
+export default function rules() {
   const node = getElementFromTemplate(`
     <header class="header">
       <div class="header__back">
@@ -40,11 +40,11 @@ export default function templateRules() {
   });
 
   backButton.addEventListener(`click`, () => {
-    setActiveScreen(templateGreeting());
+    setActiveScreen(greeting());
   });
 
   continueButton.addEventListener(`click`, () => {
-    setActiveScreen(templateGame1());
+    setActiveScreen(game1());
   });
 
   return node;

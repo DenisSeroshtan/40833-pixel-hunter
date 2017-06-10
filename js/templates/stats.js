@@ -1,8 +1,8 @@
-import getElementFromTemplate from './getElementFromTemplate.js';
-import templateGreeting from './templateGreeting.js';
-import setActiveScreen from './setActiveScreen.js';
+import getElementFromTemplate from '../getElementFromTemplate.js';
+import greeting from './greeting.js';
+import setActiveScreen from '../setActiveScreen.js';
 
-export default function templateStats() {
+export default function stats() {
   const node = getElementFromTemplate(`
     <header class="header">
       <div class="header__back">
@@ -117,7 +117,7 @@ export default function templateStats() {
   const backButton = node.querySelector(`.header__back`);
 
   backButton.addEventListener(`click`, () => {
-    setActiveScreen(templateGreeting());
+    setActiveScreen(greeting());
   });
 
   return node;

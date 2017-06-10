@@ -1,8 +1,8 @@
-import getElementFromTemplate from './getElementFromTemplate.js';
-import templateGreeting from './templateGreeting.js';
-import setActiveScreen from './setActiveScreen.js';
+import getElementFromTemplate from '../getElementFromTemplate.js';
+import greeting from './greeting.js';
+import setActiveScreen from '../setActiveScreen.js';
 
-export default function templateIntro() {
+export default function intro() {
   const node = getElementFromTemplate(`
     <div id="intro" class="intro">
       <h1 class="intro__asterisk">*</h1>
@@ -13,7 +13,7 @@ export default function templateIntro() {
   const asteriskButton = node.querySelector(`.intro__asterisk`);
 
   asteriskButton.addEventListener(`click`, () => {
-    setActiveScreen(templateGreeting());
+    setActiveScreen(greeting());
   });
 
   return node;

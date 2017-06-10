@@ -1,4 +1,4 @@
 import setActiveScreen from './setActiveScreen.js';
-import templateIntro from './templateIntro.js';
+import intro from './templates/intro.js';
 
-setActiveScreen(templateIntro());
+setActiveScreen(intro());

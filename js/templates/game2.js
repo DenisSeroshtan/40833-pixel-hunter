@@ -1,7 +1,7 @@
-import getElementFromTemplate from './getElementFromTemplate.js';
-import templateGame1 from './templateGame1.js';
-import templateGame3 from './templateGame3.js';
-import setActiveScreen from './setActiveScreen.js';
+import getElementFromTemplate from '../getElementFromTemplate.js';
+import game1 from './game1.js';
+import game3 from './game3.js';
+import setActiveScreen from '../setActiveScreen.js';
 
 export default function templateGame2() {
   const node = getElementFromTemplate(`
@@ -55,12 +55,12 @@ export default function templateGame2() {
   const backButton = node.querySelector(`.header__back`);
 
   backButton.addEventListener(`click`, () => {
-    setActiveScreen(templateGame1());
+    setActiveScreen(game1());
   });
 
   form.addEventListener(`change`, () => {
     if (form.querySelector(`[name="question1"]:checked`)) {
-      setActiveScreen(templateGame3());
+      setActiveScreen(game3());
     }
   });
 
