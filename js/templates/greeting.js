@@ -1,6 +1,6 @@
 import getElementFromTemplate from '../getElementFromTemplate.js';
-import rules from './rules.js';
 import setActiveScreen from '../setActiveScreen.js';
+import rules from './rules.js';
 
 export default function templateGreeting() {
   const node = getElementFromTemplate(`

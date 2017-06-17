@@ -1,6 +1,6 @@
 import getElementFromTemplate from '../getElementFromTemplate.js';
-import greeting from './greeting.js';
 import setActiveScreen from '../setActiveScreen.js';
+import greeting from './greeting.js';
 
 export default function intro() {
   const node = getElementFromTemplate(`
