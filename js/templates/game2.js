@@ -1,12 +1,15 @@
 import getElementFromTemplate from '../getElementFromTemplate.js';
 import setActiveScreen from '../setActiveScreen.js';
+import calculateAspectRatioFit from '../utils/resizeImage.js';
 import header from '../blocks/header.js';
 import game1 from './game1.js';
 import game3 from './game3.js';
 import levelStats from '../blocks/levelStats.js';
-import {initialState as initialStateData} from '../data/data.js';
-import {levels as levelsData} from '../data/data.js';
-import {stats as statsData} from '../data/data.js';
+import * as data from '../data/data.js';
+
+const initialStateData = data.initialState;
+const levelsData = data.levels;
+const statsData = data.stats;
 
 const answersContent = `
   ${levelsData[`2`].answers.map((answer) =>
@@ -42,6 +45,13 @@ export default function templateGame2() {
 
   const form = node.querySelector(`.game__content`);
   const backButton = node.querySelector(`.header__back`);
+  const images = node.querySelectorAll(`.game__option > img`);
+
+  for (let i = 0; i < images.length; i++) {
+    images[i].addEventListener(`load`, (event) =>{
+      calculateAspectRatioFit(images[i]);
+    });
+  }
 
   backButton.addEventListener(`click`, () => {
     setActiveScreen(game1());

@@ -1,17 +1,20 @@
 import getElementFromTemplate from '../getElementFromTemplate.js';
 import setActiveScreen from '../setActiveScreen.js';
+import calculateAspectRatioFit from '../utils/resizeImage.js';
 import header from '../blocks/header.js';
 import stats from './stats.js';
 import game2 from './game2.js';
 import levelStats from '../blocks/levelStats.js';
-import {initialState as initialStateData} from '../data/data.js';
-import {levels as levelsData} from '../data/data.js';
-import {stats as statsData} from '../data/data.js';
+import * as data from '../data/data.js';
+
+const initialStateData = data.initialState;
+const levelsData = data.levels;
+const statsData = data.stats;
 
 const answersContent = `
-  ${levelsData[`3`].answers.map((answer) =>
+  ${levelsData[`3`].answers.map((answer, i) =>
     `<div class="game__option">
-      <img src="${answer}" alt="Option 1" width="304" height="455">
+      <img src="${answer}" alt="Option ${i + 1}">
     </div>`).join(``)
   }
 `;
@@ -21,7 +24,7 @@ export default function templateGame3() {
     ${header(initialStateData)}
     <div class="game">
       <p class="game__task">Найдите рисунок среди изображений</p>
-      <form class="game__content  game__content--triple">
+      <form class="game__content game__content--triple">
         ${answersContent}
       </form>
       <div class="stats">
@@ -34,6 +37,13 @@ export default function templateGame3() {
 
   const gameOptions = node.querySelectorAll(`.game__option`);
   const backButton = node.querySelector(`.header__back`);
+  const images = node.querySelectorAll(`.game__option > img`);
+
+  for (let i = 0; i < images.length; i++) {
+    images[i].addEventListener(`load`, (event) =>{
+      calculateAspectRatioFit(images[i]);
+    });
+  }
 
   backButton.addEventListener(`click`, () => {
     setActiveScreen(game2());
