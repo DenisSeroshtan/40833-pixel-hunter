@@ -1,6 +1,6 @@
-import getElementFromTemplate from './getElementFromTemplate.js';
-import templateRules from './templateRules.js';
-import setActiveScreen from './setActiveScreen.js';
+import getElementFromTemplate from '../getElementFromTemplate.js';
+import setActiveScreen from '../setActiveScreen.js';
+import rules from './rules.js';
 
 export default function templateGreeting() {
   const node = getElementFromTemplate(`
@@ -22,7 +22,7 @@ export default function templateGreeting() {
   const continueButton = node.querySelector(`.greeting__continue`);
 
   continueButton.addEventListener(`click`, () => {
-    setActiveScreen(templateRules());
+    setActiveScreen(rules());
   });
 
   return node;

@@ -1,17 +1,11 @@
-import getElementFromTemplate from './getElementFromTemplate.js';
-import templateGreeting from './templateGreeting.js';
-import setActiveScreen from './setActiveScreen.js';
+import getElementFromTemplate from '../getElementFromTemplate.js';
+import setActiveScreen from '../setActiveScreen.js';
+import header from '../blocks/header.js';
+import greeting from './greeting.js';
 
-export default function templateStats() {
+export default function stats() {
   const node = getElementFromTemplate(`
-    <header class="header">
-      <div class="header__back">
-        <span class="back">
-          <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-          <img src="img/logo_small.png" width="101" height="44">
-        </span>
-      </div>
-    </header>
+    ${header()}
     <div class="result">
       <h1>Победа!</h1>
       <table class="result__table">
@@ -117,7 +111,7 @@ export default function templateStats() {
   const backButton = node.querySelector(`.header__back`);
 
   backButton.addEventListener(`click`, () => {
-    setActiveScreen(templateGreeting());
+    setActiveScreen(greeting());
   });
 
   return node;
