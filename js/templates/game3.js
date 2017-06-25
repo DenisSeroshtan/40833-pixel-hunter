@@ -14,7 +14,7 @@ const statsData = data.stats;
 const answersContent = `
   ${levelsData[`3`].answers.map((answer, i) =>
     `<div class="game__option">
-      <img src="${answer}" alt="Option ${i + 1}">
+      <img src="${answer.image}" alt="Option ${i + 1}">
     </div>`).join(``)
   }
 `;
