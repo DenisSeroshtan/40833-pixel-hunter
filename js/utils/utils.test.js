@@ -1,5 +1,5 @@
 import assert from 'assert';
-import {checkAnswers, setLivesCount, calcLivesPoints, generateGameStat} from './utils.js';
+import {checkAnswers, setLivesCount, calcLivesPoints, calcAnswersPoints, generateGameStat} from './utils.js';
 
 const state = {
   time: 30,
@@ -70,34 +70,35 @@ describe(`Change game state`, () => {
       assert.equal(setLivesCount(state, true).lives, state.lives);
     });
 
-    it(`The number of lives becomes negative`, function () {
-      const newState = Object.assign({}, state, {lives: 0});
-      assert.equal(setLivesCount(newState, false).lives, 0);
+    it(`The number of lives shouldn't be negative`, function () {
+      const newState = Object.assign({}, state, {lives: -1});
+      const setNegativeLives = () => setLivesCount(newState, false).lives;
+      assert.throws(setNegativeLives);
     });
   });
 
-  describe(`Calculate points from lives`, () => {
+  describe(`Every life gives 50 points`, () => {
     it(`Should return 0 If there are no more lives left`, () => {
       const initialState = {
         lives: 0
       };
       assert.equal(calcLivesPoints(initialState), 0);
     });
-    it(`Should return 50 if 1 life is left`, () => {
+    it(`Should return 50 for 1 life`, () => {
       const initialState = {
         lives: 1
       };
       assert.equal(calcLivesPoints(initialState), 50);
     });
 
-    it(`Should return 100 if 2 lives are left`, () => {
+    it(`Should return 100 for 2 lives`, () => {
       const initialState = {
         lives: 2
       };
       assert.equal(calcLivesPoints(initialState), 100);
     });
 
-    it(`Should return 150 if 3 lives are left`, () => {
+    it(`Should return 150 for 3 lives`, () => {
       const initialState = {
         lives: 3
       };
@@ -105,24 +106,39 @@ describe(`Change game state`, () => {
     });
   });
 
+  describe(`Get points which depends on answers type and lives numbers`, () => {
+    it(`Should return 200 points if type of answer is 'fast' and 3 lives`, () => {
+      const initialState = {
+        lives: 3
+      };
+      assert.equal(calcAnswersPoints(initialState, `fast`), 200);
+    });
+    it(`Should return -50 points if type of answer is 'slow' and 0 lives`, () => {
+      const initialState = {
+        lives: 0
+      };
+      assert.equal(calcAnswersPoints(initialState, `slow`), -50);
+    });
+  });
+
   describe(`Set game stats`, () => {
     it(`The correct answer is marked`, function () {
-      const newGameState = generateGameStat(state, true, 10).gameStat;
+      const newGameState = generateGameStat(state, true, 15).gameStat;
       assert.equal(newGameState[newGameState.length - 1], `correct`);
     });
 
-    it(`The wrong answer is marked`, function () {
-      const newGameState = generateGameStat(state, false, 25).gameStat;
+    it(`The wrong answer is marked or user didn't answer`, function () {
+      const newGameState = generateGameStat(state, false, -1).gameStat;
       assert.equal(newGameState[newGameState.length - 1], `wrong`);
     });
 
     it(`The correct answer is marked and it's fast`, function () {
-      const newGameState = generateGameStat(state, true, 25).gameStat;
+      const newGameState = generateGameStat(state, true, 9).gameStat;
       assert.equal(newGameState[newGameState.length - 1], `fast`);
     });
 
     it(`The correct answer is marked and it's slow`, function () {
-      const newGameState = generateGameStat(state, true, 5).gameStat;
+      const newGameState = generateGameStat(state, true, 21).gameStat;
       assert.equal(newGameState[newGameState.length - 1], `slow`);
     });
   });

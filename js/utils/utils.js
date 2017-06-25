@@ -1,9 +1,14 @@
-export function setLivesCount(state, answer) {
-  if (answer) {
-    return {lives: state.lives};
+export function setLivesCount(state, isAnswerCorrect) {
+  if (state.lives < 0) {
+    throw new RangeError(`Can't set negatives lives`);
+  }
+  if (isAnswerCorrect) {
+    return state;
   } else {
+    const newState = Object.assign({}, state);
     const newLivesCount = state.lives - 1;
-    return {lives: Math.max(newLivesCount, 0)};
+    newState.lives = newLivesCount;
+    return newState;
   }
 }
 
@@ -17,32 +22,45 @@ export function checkAnswers(state, answer) {
 }
 
 export function calcLivesPoints(state) {
-  let questionsPoints = 0;
-  for (let i = state.lives; i > 0; i--) {
-    questionsPoints += 50;
-  }
-  return questionsPoints;
+  return state.lives * 50;
 }
 
-export function generateGameStat(state, answer, time) {
-  const newGameStats = state.gameStat.slice();
-  let answerParams;
-
-  if (answer) {
-    const timePassed = state.time - time;
-
-    if (timePassed < 10) {
-      answerParams = `fast`;
-    } else if (timePassed > 20) {
-      answerParams = `slow`;
-    } else {
-      answerParams = `correct`;
-    }
-  } else {
-    answerParams = `wrong`;
+export function calcAnswersPoints(state, answerType) {
+  let points;
+  if (answerType === `correct`) {
+    points = +100;
   }
+  if (answerType === `fast`) {
+    points = +50;
+  }
+  if (answerType === `slow`) {
+    points = -50;
+  }
+  const leftLives = state.lives;
+  return points + leftLives * 50;
+}
 
-  newGameStats.push(answerParams);
+export function generateGameStat(state, isAnswerCorrect, time) {
+  const newGameStats = state.gameStat.slice();
+  const answerParams = () => {
+    if (isAnswerCorrect) {
+      if (time < 10) {
+        return `fast`;
+      }
+      if (time > 20 && time <= 30) {
+        return `slow`;
+      }
+      if (time >= 10 && time <= 20) {
+        return `correct`;
+      }
+      if (time === -1) {
+        return `wrong`;
+      }
+    }
+    return `wrong`;
+  };
+
+  newGameStats.push(answerParams());
 
   return {gameStat: newGameStats};
 }
