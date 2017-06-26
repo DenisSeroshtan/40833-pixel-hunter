@@ -5,10 +5,7 @@ export function setLivesCount(state, isAnswerCorrect) {
   if (isAnswerCorrect) {
     return state;
   } else {
-    const newState = Object.assign({}, state);
-    const newLivesCount = state.lives - 1;
-    newState.lives = newLivesCount;
-    return newState;
+    return Object.assign({}, state, {lives: state.lives - 1});
   }
 }
 
@@ -26,18 +23,16 @@ export function calcLivesPoints(state) {
 }
 
 export function calcAnswersPoints(state, answerType) {
-  let points;
-  if (answerType === `correct`) {
-    points = +100;
-  }
-  if (answerType === `fast`) {
-    points = +50;
-  }
-  if (answerType === `slow`) {
-    points = -50;
-  }
-  const leftLives = state.lives;
-  return points + leftLives * 50;
+  const points = () => {
+    if (answerType === `correct`) {
+      return +100;
+    } else if (answerType === `fast`) {
+      return +50;
+    } else {
+      return -50;
+    }
+  };
+  return points() + calcLivesPoints(state);
 }
 
 export function generateGameStat(state, isAnswerCorrect, time) {
