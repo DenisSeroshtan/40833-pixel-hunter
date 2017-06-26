@@ -14,7 +14,7 @@ const statsData = data.stats;
 const answersContent = `
   ${levelsData[`2`].answers.map((answer) =>
   `<div class="game__option">
-    <img src="${answer}" alt="Option 1" width="468" height="458">
+    <img src="${answer.image}" alt="Option 1" width="468" height="458">
     <label class="game__answer game__answer--photo">
       <input name="question1" type="radio" value="photo">
       <span>Фото</span>
