@@ -9,7 +9,7 @@ export default() => {
   rulesScreen.onBackButtonClick = () => {
     setScreen(greetingScreen());
   };
-  rulesScreen.submitForm = () => {
+  rulesScreen.onSubmitForm = () => {
     setScreen(changeLevel(questions, initialState.currentQuestion));
   };
   return rulesScreen.element;

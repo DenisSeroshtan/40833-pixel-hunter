@@ -24,5 +24,7 @@ export default class Greeting extends AbstractView {
     });
   }
 
-  onNextButtonClick() {}
+  onNextButtonClick() {
+    throw new Error(`Not implemented onNextButtonClick`);
+  }
 }

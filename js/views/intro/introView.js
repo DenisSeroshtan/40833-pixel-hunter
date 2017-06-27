@@ -18,5 +18,7 @@ export default class IntroView extends AbstractView {
     });
   }
 
-  onNextButtonClick() {}
+  onNextButtonClick() {
+    throw new Error(`Not implemented onNextButtonClick`);
+  }
 }

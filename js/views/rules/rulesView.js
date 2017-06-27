@@ -34,14 +34,16 @@ export default class RulesView extends AbstractView {
     });
     form.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      this.submitForm();
+      this.onSubmitForm();
     });
     backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
   }
 
-  onBackButtonClick() {}
+  onBackButtonClick() {
+    throw new Error(`Not implemented onBackButtonClick`);
+  }
 
   changeDisabled(button, input) {
     if (input.value === ``) {
@@ -51,5 +53,7 @@ export default class RulesView extends AbstractView {
     }
   }
 
-  submitForm() {}
+  onSubmitForm() {
+    throw new Error(`Not implemented onSubmitForm`);
+  }
 }
