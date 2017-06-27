@@ -4,7 +4,7 @@ import levelStats from '../../blocks/levelStats.js';
 import {changeAspectRatioOnLoad} from '../../utils/utils.js';
 import {initialState, stats} from '../../data/data.js';
 
-export default class chooseTypeForEach extends AbstractView {
+export default class ChooseTypeForEach extends AbstractView {
   constructor(question) {
     super();
     this.question = question;
