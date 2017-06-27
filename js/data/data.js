@@ -1,32 +1,43 @@
 export const initialState = Object.freeze({
   lives: 3,
   time: 0,
-  level: `1`
+  currentQuestion: 0,
+  answers: []
 });
 
-export const levels = Object.freeze({
-  '1': {
+export const settings = {
+  maxLives: 3,
+  screens: 3,
+  time: 30
+};
+
+export const questions = [
+  {
+    type: `chooseTypeForEach`,
     question: `Угадайте для каждого изображения фото или рисунок?`,
     answers: [
       {
         image: `https://k42.kn3.net/CF42609C8.jpg`,
         type: `paint`
-      }, {
+      },
+      {
         image: `http://i.imgur.com/1KegWPz.jpg`,
         type: `photo`
       }
     ]
   },
-  '2': {
-    question: `Угадай, фото или рисунок?`,
+  {
+    type: `chooseTypeForOne`,
+    question: `Угадай, фото или рисунок`,
     answers: [
       {
-        image: `https://k32.kn3.net/5C7060EC5.jpg`,
+        image: `https://k42.kn3.net/CF42609C8.jpg`,
         type: `paint`
       }
     ]
   },
-  '3': {
+  {
+    type: `findType`,
     question: `Найдите рисунок среди изображений`,
     answers: [
       {
@@ -43,7 +54,7 @@ export const levels = Object.freeze({
       }
     ]
   }
-});
+];
 
 export const stats = new Map([
   [1, `wrong`],
