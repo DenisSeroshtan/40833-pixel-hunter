@@ -1,10 +1,10 @@
-import AbstractView from '../view.js';
+import AbstractView from '../abstractView.js';
 import header from '../../blocks/header.js';
 import levelStats from '../../blocks/levelStats.js';
 import {changeAspectRatioOnLoad} from '../../utils/utils.js';
 import {initialState, stats} from '../../data/data.js';
 
-export default class GameOneView extends AbstractView {
+export default class chooseTypeForEach extends AbstractView {
   constructor(question) {
     super();
     this.question = question;
@@ -54,7 +54,11 @@ export default class GameOneView extends AbstractView {
     changeAspectRatioOnLoad(images);
   }
 
-  onBackButtonClick() {}
+  onBackButtonClick() {
+    throw new Error(`Not implemented onBackButtonClick`);
+  }
 
-  onChangeScreen() {}
+  onChangeScreen() {
+    throw new Error(`Not implemented onChangeScreen`);
+  }
 }

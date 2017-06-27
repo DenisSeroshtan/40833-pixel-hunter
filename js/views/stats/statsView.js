@@ -1,4 +1,4 @@
-import AbstractView from '../view.js';
+import AbstractView from '../abstractView.js';
 import header from '../../blocks/header.js';
 
 export default class StatsView extends AbstractView {

@@ -1,5 +1,5 @@
 import {setScreen} from '../../utils/utils.js';
-import GreetingView from './greeting-view';
+import GreetingView from './greetingView';
 import rulesScreen from '../rules/rules.js';
 
 export default () => {

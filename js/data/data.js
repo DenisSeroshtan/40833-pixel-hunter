@@ -13,7 +13,7 @@ export const settings = {
 
 export const questions = [
   {
-    type: `gameOne`,
+    type: `chooseTypeForEach`,
     question: `Угадайте для каждого изображения фото или рисунок?`,
     answers: [
       {
@@ -27,7 +27,7 @@ export const questions = [
     ]
   },
   {
-    type: `gameTwo`,
+    type: `chooseTypeForOne`,
     question: `Угадай, фото или рисунок`,
     answers: [
       {
@@ -37,7 +37,7 @@ export const questions = [
     ]
   },
   {
-    type: `gameThree`,
+    type: `findType`,
     question: `Найдите рисунок среди изображений`,
     answers: [
       {

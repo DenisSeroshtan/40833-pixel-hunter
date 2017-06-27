@@ -1,6 +1,6 @@
-import GameOneView from './games/game-one-view.js';
-import GameTwoView from './games/game-two-view.js';
-import GameThreeView from './games/game-three-view.js';
+import ChooseTypeForEach from './games/chooseTypeForEach.js';
+import ChooseTypeForOne from './games/chooseTypeForOne.js';
+import FindType from './games/findType.js';
 import {setScreen} from '../utils/utils.js';
 import greetingScreen from './greeting/greeting.js';
 import statsScreen from './stats/stats.js';
@@ -11,14 +11,14 @@ export default function changeLevel(questions, number) {
   let currentGame;
 
   switch (questions[number].type) {
-    case `gameOne`:
-      currentGame = new GameOneView(questions[number]);
+    case `chooseTypeForEach`:
+      currentGame = new ChooseTypeForEach(questions[number]);
       break;
-    case `gameTwo`:
-      currentGame = new GameTwoView(questions[number]);
+    case `chooseTypeForOne`:
+      currentGame = new ChooseTypeForOne(questions[number]);
       break;
-    case `gameThree`:
-      currentGame = new GameThreeView(questions[number]);
+    case `findType`:
+      currentGame = new FindType(questions[number]);
       break;
     default:
       throw new Error(`Nothing to return. There is no more games.`);
@@ -30,7 +30,7 @@ export default function changeLevel(questions, number) {
 
   currentGame.onChangeScreen = () => {
     if (number < settings.screens - 1) {
-      currentQuestion = ++number;
+      currentQuestion = number + 1;
       setScreen(changeLevel(questions, currentQuestion));
     } else {
       setScreen(statsScreen());

@@ -1,6 +1,6 @@
 import {setScreen} from '../../utils/utils.js';
 import greetingScreen from '../greeting/greeting.js';
-import RulesView from './rules-view.js';
+import RulesView from './rulesView.js';
 import changeLevel from '../changeLevel.js';
 import {questions, initialState} from '../../data/data.js';
 
