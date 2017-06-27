@@ -24,14 +24,18 @@ export function calcLivesPoints(state) {
 
 export function calcAnswersPoints(state, answerType) {
   const points = () => {
-    if (answerType === `correct`) {
-      return +100;
-    } else if (answerType === `fast`) {
-      return +50;
-    } else {
-      return -50;
+    switch (answerType) {
+      case `correct`:
+        return +100;
+      case `fast`:
+        return +50;
+      case `slow`:
+        return -50;
+      default:
+        throw new Error(`Nothing to return. Answer type is ${answerType}`);
     }
   };
+
   return points() + calcLivesPoints(state);
 }
 
@@ -58,4 +62,38 @@ export function generateGameStat(state, isAnswerCorrect, time) {
   newGameStats.push(answerParams());
 
   return {gameStat: newGameStats};
+}
+
+export function createElement(string) {
+  const template = document.createElement(`template`);
+  template.innerHTML = string;
+  return template.content;
+}
+
+export function setScreen(screen) {
+  const mainScreen = document.getElementById(`main`);
+  mainScreen.innerHTML = ``;
+  mainScreen.appendChild(screen);
+}
+
+export function calculateAspectRatioFit(img) {
+  const parentWidth = img.parentNode.clientWidth;
+  const parentHeight = img.parentNode.clientHeight;
+
+  const imgWidth = img.naturalWidth;
+  const imgHeight = img.naturalHeight;
+
+  if (imgWidth > imgHeight) {
+    img.width = parentWidth;
+  } else {
+    img.height = parentHeight;
+  }
+}
+
+export function changeAspectRatioOnLoad(images) {
+  for (let i = 0; i < images.length; i++) {
+    images[i].addEventListener(`load`, (event) =>{
+      calculateAspectRatioFit(images[i]);
+    });
+  }
 }
