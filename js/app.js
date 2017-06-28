@@ -1,39 +1,32 @@
-import IntroScreen from './views/intro/intro';
-import GreetingScreen from './views/greeting/greeting';
-import RulesScreen from './views/rules/rules';
-import NewGameScreen from './views/games/game';
-import StatsScreen from './views/stats/stats';
+import IntroScreen from './views/intro/introScreen';
+import GreetingScreen from './views/greeting/greetingScreen';
+import RulesScreen from './views/rules/rulesScreen';
+import NewGameScreen from './views/games/gameScreen';
+import StatsScreen from './views/stats/statsScreen';
 
-export default new class {
-  constructor() {
-    this._introScreen = new IntroScreen();
-    this._greetingScreen = new GreetingScreen();
-    this._rulesScreen = new RulesScreen();
-    this._newGameScreen = new NewGameScreen();
-    this._statsScreen = new StatsScreen();
-  }
+export default class App {
 
   init() {
-    this._introScreen.init();
+    IntroScreen.init();
   }
 
   showIntro() {
-    this._introScreen.init();
+    IntroScreen.init();
   }
 
-  showGreeting() {
-    this._greetingScreen.init();
+  static showGreeting() {
+    GreetingScreen.init();
   }
 
-  showRules() {
-    this._rulesScreen.init();
+  static showRules() {
+    RulesScreen.init();
   }
 
-  showGame() {
-    this._newGameScreen.init();
+  static showGame() {
+    NewGameScreen.init();
   }
 
-  showStats(stats) {
-    this._statsScreen.init(stats);
+  static showStats(stats) {
+    StatsScreen.init(stats);
   }
-}();
+}

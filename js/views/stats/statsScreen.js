@@ -1,8 +1,8 @@
 import App from '../../app.js';
-import {setScreen} from '../../utils/utils.js';
+import {renderScreen} from '../../utils/utils.js';
 import StatsView from './statsView.js';
 
-export default class Stats {
+class StatsScreen {
   constructor() {
     this.view = new StatsView();
   }
@@ -10,6 +10,8 @@ export default class Stats {
   init() {
     this.view.onBackButtonClick = () => App.showGreeting();
 
-    setScreen(this.view.element);
+    renderScreen(this.view);
   }
 }
+
+export default new StatsScreen();

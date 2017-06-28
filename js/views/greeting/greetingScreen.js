@@ -1,8 +1,8 @@
 import App from '../../app.js';
-import {setScreen} from '../../utils/utils.js';
+import {renderScreen} from '../../utils/utils.js';
 import GreetingView from './greetingView';
 
-export default class GreetingPresenter {
+class GreetingScreen {
   constructor() {
     this.view = new GreetingView();
   }
@@ -10,6 +10,8 @@ export default class GreetingPresenter {
   init() {
     this.view.onNextButtonClick = () => App.showRules();
 
-    setScreen(this.view.element);
+    renderScreen(this.view);
   }
 }
+
+export default new GreetingScreen();

@@ -1,8 +1,8 @@
 import App from '../../app.js';
-import {setScreen} from '../../utils/utils.js';
+import {renderScreen} from '../../utils/utils.js';
 import IntroView from './introView.js';
 
-export default class IntroPresenter {
+class IntroScreen {
   constructor() {
     this.view = new IntroView();
   }
@@ -10,6 +10,8 @@ export default class IntroPresenter {
   init() {
     this.view.onNextButtonClick = () => App.showGreeting();
 
-    setScreen(this.view.element);
+    renderScreen(this.view);
   }
 }
+
+export default new IntroScreen();

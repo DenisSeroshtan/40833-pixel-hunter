@@ -70,10 +70,10 @@ export function createElement(string) {
   return template;
 }
 
-export function setScreen(screen) {
+export function renderScreen(view) {
   const mainScreen = document.getElementById(`main`);
   mainScreen.innerHTML = ``;
-  mainScreen.appendChild(screen);
+  mainScreen.appendChild(view.element);
 }
 
 export function calculateAspectRatioFit(img) {

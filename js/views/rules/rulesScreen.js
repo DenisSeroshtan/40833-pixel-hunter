@@ -1,8 +1,8 @@
 import App from '../../app.js';
-import {setScreen} from '../../utils/utils.js';
+import {renderScreen} from '../../utils/utils.js';
 import RulesView from './rulesView.js';
 
-export default class Rules {
+class RulesScreen {
   constructor() {
     this.view = new RulesView();
   }
@@ -12,6 +12,8 @@ export default class Rules {
 
     this.view.onSubmitForm = () => App.showGame();
 
-    setScreen(this.view.element);
+    renderScreen(this.view);
   }
 }
+
+export default new RulesScreen();
