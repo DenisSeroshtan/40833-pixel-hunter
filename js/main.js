@@ -1,4 +1,3 @@
-import {setScreen} from './utils/utils';
-import intro from './views/intro/intro';
+import App from './app';
 
-setScreen(intro());
+App.init();

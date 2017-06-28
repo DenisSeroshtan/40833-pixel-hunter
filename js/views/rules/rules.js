@@ -1,16 +1,17 @@
+import App from '../../app.js';
 import {setScreen} from '../../utils/utils.js';
-import greetingScreen from '../greeting/greeting.js';
 import RulesView from './rulesView.js';
-import changeLevel from '../changeLevel.js';
-import {questions, initialState} from '../../data/data.js';
 
-export default() => {
-  const rulesScreen = new RulesView();
-  rulesScreen.onBackButtonClick = () => {
-    setScreen(greetingScreen());
-  };
-  rulesScreen.onSubmitForm = () => {
-    setScreen(changeLevel(questions, initialState.currentQuestion));
-  };
-  return rulesScreen.element;
-};
+export default class Rules {
+  constructor() {
+    this.view = new RulesView();
+  }
+
+  init() {
+    this.view.onBackButtonClick = () => App.showGreeting();
+
+    this.view.onSubmitForm = () => App.showGame();
+
+    setScreen(this.view.element);
+  }
+}

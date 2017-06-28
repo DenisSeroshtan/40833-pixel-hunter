@@ -56,10 +56,10 @@ export default class ChooseTypeForOne extends AbstractView {
   }
 
   onBackButtonClick() {
-    throw new Error(`Not implemented onBackButtonClick`);
+    throw new Error(`Not implemented`);
   }
 
   onChangeScreen() {
-    throw new Error(`Not implemented onChangeScreen`);
+    throw new Error(`Not implemented`);
   }
 }

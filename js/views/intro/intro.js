@@ -1,13 +1,15 @@
-import showGreeting from '../greeting/greeting.js';
+import App from '../../app.js';
 import {setScreen} from '../../utils/utils.js';
 import IntroView from './introView.js';
 
-export default () => {
-  const intro = new IntroView();
+export default class IntroPresenter {
+  constructor() {
+    this.view = new IntroView();
+  }
 
-  intro.onNextButtonClick = () => {
-    setScreen(showGreeting());
-  };
+  init() {
+    this.view.onNextButtonClick = () => App.showGreeting();
 
-  return intro.element;
-};
+    setScreen(this.view.element);
+  }
+}
