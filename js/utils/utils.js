@@ -65,15 +65,15 @@ export function generateGameStat(state, isAnswerCorrect, time) {
 }
 
 export function createElement(string) {
-  const template = document.createElement(`template`);
+  const template = document.createElement(`div`);
   template.innerHTML = string;
-  return template.content;
+  return template;
 }
 
-export function setScreen(screen) {
+export function renderScreen(view) {
   const mainScreen = document.getElementById(`main`);
   mainScreen.innerHTML = ``;
-  mainScreen.appendChild(screen);
+  mainScreen.appendChild(view.element);
 }
 
 export function calculateAspectRatioFit(img) {

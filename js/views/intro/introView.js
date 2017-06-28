@@ -13,12 +13,10 @@ export default class IntroView extends AbstractView {
 
   bind() {
     const button = this.element.querySelector(`.intro__asterisk`);
-    button.addEventListener(`click`, () => {
-      this.onNextButtonClick();
-    });
+    button.addEventListener(`click`, () => this.onNextButtonClick());
   }
 
   onNextButtonClick() {
-    throw new Error(`Not implemented onNextButtonClick`);
+    throw new Error(`Not implemented`);
   }
 }
