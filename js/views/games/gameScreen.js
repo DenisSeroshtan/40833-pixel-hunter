@@ -4,7 +4,7 @@ import FindType from './findTypeView.js';
 import App from '../../app.js';
 import {questions} from '../../data/data.js';
 
-export const MAX_QUESTIONS = 3;
+export const MAX_QUESTIONS = 5;
 const MAX_LIVES = 3;
 export const TIME_FOR_QUESTION = 30;
 export const QUICK_ANSWER_TIME = 10;

@@ -31,6 +31,34 @@ export const questions = [
     question: `Угадай, фото или рисунок`,
     answers: [
       {
+        image: `https://i.imgur.com/DiHM5Zb.jpg`,
+        type: `paint`
+      }
+    ]
+  },
+  {
+    type: `findType`,
+    question: `Найдите рисунок среди изображений`,
+    answers: [
+      {
+        image: `https://k42.kn3.net/CF42609C8.jpg`,
+        type: `paint`
+      },
+      {
+        image: `http://i.imgur.com/1KegWPz.jpg`,
+        type: `photo`
+      },
+      {
+        image: `https://i.imgur.com/DiHM5Zb.jpg`,
+        type: `paint`
+      }
+    ]
+  },
+  {
+    type: `chooseTypeForOne`,
+    question: `Угадай, фото или рисунок`,
+    answers: [
+      {
         image: `https://k42.kn3.net/CF42609C8.jpg`,
         type: `paint`
       }
