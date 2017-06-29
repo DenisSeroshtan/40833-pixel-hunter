@@ -5,18 +5,20 @@ import {changeAspectRatioOnLoad} from '../../utils/utils.js';
 import {initialState, stats} from '../../data/data.js';
 
 export default class ChooseTypeForOne extends AbstractView {
-  constructor(question) {
+  constructor(state, question) {
     super();
     this.question = question;
+
+    this.state = state;
   }
   get template() {
     return `
-      ${header(initialState)}
+      ${header(this.state)}
         <div class="game">
           <p class="game__task">${this.question.question}</p>
           <form class="game__content game__content--wide">
             ${this.question.answers.map((answer, i) =>
-              `<div class="game__option">
+      `<div class="game__option">
                 <img src="${answer.image}" alt="Option ${i + 1}">
                 <label class="game__answer game__answer--photo">
                   <input name="question1" type="radio" value="photo">
@@ -27,7 +29,7 @@ export default class ChooseTypeForOne extends AbstractView {
                   <span>Рисунок</span>
                 </label>
                 </div>`).join(``)
-            }
+      }
           </form>
           <div class="stats">
             <ul class="stats">
@@ -47,7 +49,7 @@ export default class ChooseTypeForOne extends AbstractView {
     const answerInputs = this.element.querySelectorAll(`.game__answer input`);
     for (const answer of answerInputs) {
       answer.addEventListener(`change`, () => {
-        this.onChangeScreen();
+        this.onAnswer(true);
       });
     }
 
@@ -59,7 +61,7 @@ export default class ChooseTypeForOne extends AbstractView {
     throw new Error(`Not implemented`);
   }
 
-  onChangeScreen() {
+  onAnswer() {
     throw new Error(`Not implemented`);
   }
 }

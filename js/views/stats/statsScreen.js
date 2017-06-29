@@ -14,4 +14,4 @@ class StatsScreen {
   }
 }
 
-export default new StatsScreen();
+export default StatsScreen;

@@ -2,6 +2,10 @@ import AbstractView from '../abstractView.js';
 import header from '../../blocks/header.js';
 
 export default class StatsView extends AbstractView {
+  constructor(stats) {
+    super();
+    this.stats = stats;
+  }
   get template() {
     return `
       ${header()}
@@ -109,6 +113,7 @@ export default class StatsView extends AbstractView {
   }
 
   bind() {
+    console.log(this.stats)
     const backButton = this.element.querySelector(`.header__back`);
     backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
