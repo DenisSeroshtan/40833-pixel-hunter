@@ -4,6 +4,12 @@ import FindType from './findTypeView.js';
 import App from '../../app.js';
 import {questions} from '../../data/data.js';
 
+export const MAX_QUESTIONS = 3;
+const MAX_LIVES = 3;
+export const TIME_FOR_QUESTION = 30;
+export const QUICK_ANSWER_TIME = 10;
+export const LATE_ANSWER_TIME = 20;
+
 const QuestionType = {
   chooseTypeForEach: `chooseTypeForEach`,
   chooseTypeForOne: `chooseTypeForOne`,
@@ -24,12 +30,15 @@ export const ResultType = Object.freeze({
   SLOW: `slow`
 });
 
-export const MAX_QUESTIONS = 3;
-const MAX_LIVES = 3;
-export const TIME_FOR_QUESTION = 30;
-export const QUICK_ANSWER_TIME = 10;
-export const LATE_ANSWER_TIME = 20;
+export const setTime = (state, time) => {
+  if (isNaN(time) || time < 0 || time > TIME_FOR_QUESTION) {
+    throw new RangeError(`Incorrect time. Time should be between 0 – ${TIME_FOR_QUESTION}.`);
+  }
 
+  const newState = Object.assign({}, state, {time});
+
+  return newState;
+};
 
 export const setLives = (state, lives) => {
   if (typeof state !== `object` || typeof lives !== `number` || typeof state.lives !== `number`) {
@@ -59,15 +68,42 @@ class GameScreen {
     this.state = initialState();
     this.view = this.createView(initialState(), this.getQuestion());
     this.view.show();
+    this.startTimer();
+  }
+
+  startTimer() {
+    this.timer = setInterval(() => {
+      this.state = setTime(this.state, this.state.time - 1);
+      this.view.updateTimer(this.state.time);
+
+      if (this.state.time <= 0) {
+        this.stopTimer();
+
+        this.checkAnswer(false);
+      }
+
+    }, 1000);
+  }
+
+  stopTimer() {
+    if (!this.timer) {
+      return;
+    }
+
+    clearInterval(this.timer);
   }
 
   createView(state) {
     const view = new this.gameList[this.getQuestion().type](state, this.getQuestion());
     view.onAnswer = (isCorrectAnswer) => {
+      this.stopTimer();
       this.checkAnswer(isCorrectAnswer);
     };
 
-    view.onBack = () => App.showGreeting();
+    view.onBack = () => {
+      this.stopTimer();
+      App.showGreeting();
+    };
 
     return view;
   }
@@ -79,6 +115,7 @@ class GameScreen {
 
     this.state.stats.push(this.getResult(isCorrectAnswer));
     this.state.question++;
+    console.log(this.state)
     this.changeScreen(this.state);
   }
 
@@ -88,6 +125,7 @@ class GameScreen {
 
       this.view = this.createView(this.state);
       this.view.show();
+      this.startTimer();
 
     } else {
       App.showStats(this.state);

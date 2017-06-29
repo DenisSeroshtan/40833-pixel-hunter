@@ -39,6 +39,8 @@ export default class ChooseTypeForEach extends AbstractView {
   }
 
   bind() {
+    this.timerNode = this.element.querySelector(`.game__timer`);
+
     this.form = this.element.querySelector(`.game__content`);
     this.form.addEventListener(`change`, () => {
       const checkedAnswers = this.form.querySelectorAll(`input[type=radio]:checked`);
@@ -54,6 +56,10 @@ export default class ChooseTypeForEach extends AbstractView {
 
     const images = this.element.querySelectorAll(`.game__option > img`);
     changeAspectRatioOnLoad(images);
+  }
+
+  updateTimer(time) {
+    this.timerNode.innerHTML = time;
   }
 
   onBackButtonClick() {

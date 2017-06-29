@@ -41,6 +41,8 @@ export default class ChooseTypeForOne extends AbstractView {
   }
 
   bind() {
+    this.timerNode = this.element.querySelector(`.game__timer`);
+
     const backButton = this.element.querySelector(`.header__back`);
     backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
@@ -55,6 +57,10 @@ export default class ChooseTypeForOne extends AbstractView {
 
     const images = this.element.querySelectorAll(`.game__option > img`);
     changeAspectRatioOnLoad(images);
+  }
+
+  updateTimer(time) {
+    this.timerNode.innerHTML = time;
   }
 
   onBackButtonClick() {
