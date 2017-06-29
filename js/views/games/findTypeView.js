@@ -24,9 +24,7 @@ export default class findType extends AbstractView {
       }
           </form>
           <div class="stats">
-            <ul class="stats">
-              ${levelStats(stats)}
-            </ul>
+            ${levelStats(this.state.stats)}
           </div>
         </div>
       `.trim();

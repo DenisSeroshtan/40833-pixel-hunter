@@ -32,7 +32,7 @@ export default class ChooseTypeForEach extends AbstractView {
       }
         </form>
         <div class="stats">
-          ${levelStats(stats)}
+          ${levelStats(this.state.stats)}
         </div>
       </div>
       `.trim();

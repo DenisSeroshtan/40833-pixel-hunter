@@ -32,9 +32,7 @@ export default class ChooseTypeForOne extends AbstractView {
       }
           </form>
           <div class="stats">
-            <ul class="stats">
-              ${levelStats(stats)}
-            </ul>
+            ${levelStats(this.state.stats)}
           </div>
         </div>
       `.trim();
