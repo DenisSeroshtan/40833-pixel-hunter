@@ -31,7 +31,6 @@ class App {
   }
   init() {
     const {controller, state} = this._parseHashFromUrl();
-    console.log({controller, state})
     this.changeController(controller, state);
   }
 

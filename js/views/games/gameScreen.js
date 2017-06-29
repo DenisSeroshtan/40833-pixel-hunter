@@ -90,7 +90,7 @@ class GameScreen {
       this.view.show();
 
     } else {
-      App.showStats(this.state.stats);
+      App.showStats(this.state);
     }
   }
 
