@@ -5,6 +5,7 @@ import NewGameScreen from './views/games/gameScreen';
 import StatsScreen from './views/stats/statsScreen';
 import Preloader from './views/preloader/preloader';
 import AbstractModel from './models/abstractModel';
+import StatsModel from './models/statsModel';
 import controllerId from './enums/controllerId';
 
 
@@ -67,8 +68,12 @@ class App {
   }
 
   showStats(state) {
-    const encodeState = btoa(JSON.stringify(state));
-    location.hash = `${controllerId.STATS}=${encodeState}`;
+    StatsModel.send(state)
+      .then(() => {
+        const encodeState = btoa(JSON.stringify(state));
+        location.hash = `${controllerId.STATS}=${encodeState}`;
+      })
+      .catch(window.console.error);
   }
 
   _setup(data) {
