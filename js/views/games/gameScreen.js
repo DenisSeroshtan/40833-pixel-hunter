@@ -115,7 +115,6 @@ class GameScreen {
 
     this.state.stats.push(this.getResult(isCorrectAnswer));
     this.state.question++;
-    console.log(this.state)
     this.changeScreen(this.state);
   }
 
@@ -137,19 +136,17 @@ class GameScreen {
   }
 
   getResult(isCorrectAnswer) {
-    let str;
-
-    if (!isCorrectAnswer) {
-      str = ResultType.WRONG;
-    } else if (TIME_FOR_QUESTION - this.state.time < QUICK_ANSWER_TIME) {
-      str = ResultType.FAST;
-    } else if (TIME_FOR_QUESTION - this.state.time > LATE_ANSWER_TIME) {
-      str = ResultType.SLOW;
-    } else {
-      str = ResultType.CORRECT;
+    const differenceTime = initialState().timer - this.timer;
+    if (!isCorrectAnswer || this.timer === 0) {
+      return ResultType.WRONG;
     }
-
-    return str;
+    if (differenceTime < QUICK_ANSWER_TIME) {
+      return ResultType.FAST;
+    }
+    if (differenceTime > QUICK_ANSWER_TIME) {
+      return ResultType.SLOW;
+    }
+    return ResultType.CORRECT;
   }
 }
 

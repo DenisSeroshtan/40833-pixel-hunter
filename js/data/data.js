@@ -84,22 +84,3 @@ export const questions = [
   }
 ];
 
-export const stats = new Map([
-  [1, `wrong`],
-  [2, `fast`],
-  [3, `slow`],
-  [4, `fast`],
-  [5, `wrong`],
-  [6, `unknown`],
-  [7, `slow`],
-  [8, `wrong`],
-  [9, `fast`],
-  [10, `slow`]
-]);
-
-export const finalStats = [
-  [`wrong`, `slow`, `fast`, `correct`, `wrong`, `unknown`, `slow`, `unknown`, `fast`, `unknown`],
-  [`wrong`, `slow`, `fast`, `correct`, `wrong`, `unknown`, `slow`, `wrong`, `fast`, `wrong`],
-  [`wrong`, `fast`, `fast`, `correct`, `wrong`, `unknown`, `slow`, `wrong`, `slow`, `slow`],
-  [`correct`, `fast`, `correct`, `correct`, `fast`, `correct`, `correct`, `slow`, `correct`, `correct`],
-];

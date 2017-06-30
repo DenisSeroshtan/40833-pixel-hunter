@@ -2,7 +2,6 @@ import AbstractView from '../abstractView.js';
 import header from '../../blocks/header.js';
 import levelStats from '../../blocks/levelStats.js';
 import {changeAspectRatioOnLoad} from '../../utils/utils.js';
-import {stats} from '../../data/data.js';
 
 export default class ChooseTypeForOne extends AbstractView {
   constructor(state, question) {
