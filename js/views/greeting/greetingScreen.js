@@ -14,4 +14,4 @@ class GreetingScreen {
   }
 }
 
-export default new GreetingScreen();
+export default GreetingScreen;

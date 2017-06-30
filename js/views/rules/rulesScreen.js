@@ -16,4 +16,4 @@ class RulesScreen {
   }
 }
 
-export default new RulesScreen();
+export default RulesScreen;

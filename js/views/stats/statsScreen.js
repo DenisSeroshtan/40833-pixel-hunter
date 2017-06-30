@@ -3,15 +3,16 @@ import {renderScreen} from '../../utils/utils.js';
 import StatsView from './statsView.js';
 
 class StatsScreen {
-  constructor() {
-    this.view = new StatsView();
+  constructor(stats) {
+    this.stats = stats;
   }
 
   init() {
+    this.view = new StatsView(this.stats);
     this.view.onBackButtonClick = () => App.showGreeting();
 
     renderScreen(this.view);
   }
 }
 
-export default new StatsScreen();
+export default StatsScreen;

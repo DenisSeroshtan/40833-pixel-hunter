@@ -4,29 +4,75 @@ import RulesScreen from './views/rules/rulesScreen';
 import NewGameScreen from './views/games/gameScreen';
 import StatsScreen from './views/stats/statsScreen';
 
-export default class App {
+const ControllerId = {
+  INTRO: ``,
+  GREETING: `greeting`,
+  RULES: `rules`,
+  GAME: `game`,
+  STATS: `stat`,
+};
 
+const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
+
+class App {
+  constructor() {
+    this.routes = {
+      [ControllerId.INTRO]: IntroScreen,
+      [ControllerId.GREETING]: GreetingScreen,
+      [ControllerId.RULES]: RulesScreen,
+      [ControllerId.GAME]: NewGameScreen,
+      [ControllerId.STATS]: StatsScreen
+    };
+
+    window.onhashchange = () => {
+      const {controller, state} = this._parseHashFromUrl();
+      this.changeController(controller, state);
+    };
+  }
   init() {
-    IntroScreen.init();
+    const {controller, state} = this._parseHashFromUrl();
+    this.changeController(controller, state);
+  }
+
+  _parseHashFromUrl() {
+    const hash = location.hash.split(`=`);
+    const [controller, hashValue] = hash;
+    return {
+      controller: getControllerIdFromHash(controller),
+      state: hashValue ? JSON.parse(atob(hashValue)) : hashValue
+    };
+  }
+
+  changeController(route = ``, state = ``) {
+    const Controller = this.routes[route];
+    if (Controller) {
+      new Controller(state).init();
+    }
   }
 
   showIntro() {
-    IntroScreen.init();
+    location.hash = ControllerId.INTRO;
   }
 
-  static showGreeting() {
-    GreetingScreen.init();
+  showGreeting() {
+    location.hash = ControllerId.GREETING;
   }
 
-  static showRules() {
-    RulesScreen.init();
+  showRules() {
+    location.hash = ControllerId.RULES;
   }
 
-  static showGame() {
-    NewGameScreen.init();
+  showGame() {
+    location.hash = ControllerId.GAME;
   }
 
-  static showStats(stats) {
-    StatsScreen.init(stats);
+  showStats(state) {
+    const encodeState = btoa(JSON.stringify(state));
+    location.hash = `${ControllerId.STATS}=${encodeState}`;
   }
 }
+
+const app = new App();
+app.init();
+
+export default app;

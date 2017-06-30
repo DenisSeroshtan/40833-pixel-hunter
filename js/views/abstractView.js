@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils.js';
+import {createElement, renderScreen} from '../utils/utils.js';
 
 export default class AbstractView {
   get template() {
@@ -10,6 +10,10 @@ export default class AbstractView {
   }
 
   bind() {}
+
+  show() {
+    renderScreen(this);
+  }
 
   get element() {
     if (!this._element) {

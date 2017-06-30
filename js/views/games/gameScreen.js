@@ -1,57 +1,153 @@
 import ChooseTypeForEach from './chooseTypeForEachView.js';
 import ChooseTypeForOne from './chooseTypeForOneView.js';
 import FindType from './findTypeView.js';
-import {renderScreen} from '../../utils/utils.js';
 import App from '../../app.js';
-import {initialState, settings, questions} from '../../data/data.js';
+import {questions} from '../../data/data.js';
+
+export const MAX_QUESTIONS = 5;
+const MAX_LIVES = 3;
+export const TIME_FOR_QUESTION = 30;
+export const QUICK_ANSWER_TIME = 10;
+export const LATE_ANSWER_TIME = 20;
+
+const QuestionType = {
+  chooseTypeForEach: `chooseTypeForEach`,
+  chooseTypeForOne: `chooseTypeForOne`,
+  findType: `findType`
+};
+
+export const initialState = () => Object.freeze({
+  lives: 3,
+  question: 0,
+  time: 30,
+  stats: []
+});
+
+export const ResultType = Object.freeze({
+  CORRECT: `correct`,
+  WRONG: `wrong`,
+  FAST: `fast`,
+  SLOW: `slow`
+});
+
+export const setTime = (state, time) => {
+  if (isNaN(time) || time < 0 || time > TIME_FOR_QUESTION) {
+    throw new RangeError(`Incorrect time. Time should be between 0 – ${TIME_FOR_QUESTION}.`);
+  }
+
+  const newState = Object.assign({}, state, {time});
+
+  return newState;
+};
+
+export const setLives = (state, lives) => {
+  if (typeof state !== `object` || typeof lives !== `number` || typeof state.lives !== `number`) {
+    throw new Error(`Parameters shouldn't be undefined or incorrect parameter type.`);
+  }
+
+  if (isNaN(lives) || lives < 0 || lives > 10) {
+    throw new RangeError(`Lives must be between 0...${MAX_LIVES}.`);
+  }
+
+  const newState = Object.assign({}, state, {lives});
+
+  return newState;
+};
 
 class GameScreen {
   constructor() {
-    this._questions = questions;
-    this._number = initialState.currentQuestion;
-    this._state = Object.assign({}, initialState);
+    this.questions = questions;
+    this.gameList = {
+      [QuestionType.chooseTypeForEach]: ChooseTypeForEach,
+      [QuestionType.chooseTypeForOne]: ChooseTypeForOne,
+      [QuestionType.findType]: FindType
+    };
   }
 
   init() {
-    this.changeLevel(this._questions, this._number);
+    this.state = initialState();
+    this.view = this.createView(initialState(), this.getQuestion());
+    this.view.show();
+    this.startTimer();
   }
 
-  changeLevel(levelsQuestions, number) {
-    let currentQuestion = this._state.currentQuestion;
+  startTimer() {
+    this.timer = setInterval(() => {
+      this.state = setTime(this.state, this.state.time - 1);
+      this.view.updateTimer(this.state.time);
 
-    const currentQuestionType = levelsQuestions[number].type;
-    const QuestionViewClass = getQuestionViewClass(currentQuestionType);
+      if (this.state.time <= 0) {
+        this.stopTimer();
 
-    this.view = new QuestionViewClass(levelsQuestions[number]);
+        this.checkAnswer(false);
+      }
 
-    this.view.onBackButtonClick = () => {
+    }, 1000);
+  }
+
+  stopTimer() {
+    if (!this.timer) {
+      return;
+    }
+
+    clearInterval(this.timer);
+  }
+
+  createView(state) {
+    const view = new this.gameList[this.getQuestion().type](state, this.getQuestion());
+    view.onAnswer = (isCorrectAnswer) => {
+      this.stopTimer();
+      this.checkAnswer(isCorrectAnswer);
+    };
+
+    view.onBack = () => {
+      this.stopTimer();
       App.showGreeting();
     };
 
-    this.view.onChangeScreen = () => {
-      if (number < settings.screens - 1) {
-        currentQuestion = number + 1;
-        this.changeLevel(levelsQuestions, currentQuestion);
-      } else {
-        App.showStats();
-      }
-    };
+    return view;
+  }
 
-    return renderScreen(this.view);
+  checkAnswer(isCorrectAnswer) {
+    if (!isCorrectAnswer) {
+      this.state = setLives(this.state, this.state.lives - 1);
+    }
+
+    this.state.stats.push(this.getResult(isCorrectAnswer));
+    this.state.question++;
+    this.changeScreen(this.state);
+  }
+
+  changeScreen(state) {
+    if (state.question < MAX_QUESTIONS && state.lives > 0) {
+      this.state = Object.assign({}, this.state, {time: initialState().time});
+
+      this.view = this.createView(this.state);
+      this.view.show();
+      this.startTimer();
+
+    } else {
+      App.showStats(this.state);
+    }
+  }
+
+  getQuestion() {
+    return this.questions[this.state.question];
+  }
+
+  getResult(isCorrectAnswer) {
+    const differenceTime = initialState().timer - this.timer;
+    if (!isCorrectAnswer || this.timer === 0) {
+      return ResultType.WRONG;
+    }
+    if (differenceTime < QUICK_ANSWER_TIME) {
+      return ResultType.FAST;
+    }
+    if (differenceTime > QUICK_ANSWER_TIME) {
+      return ResultType.SLOW;
+    }
+    return ResultType.CORRECT;
   }
 }
 
-function getQuestionViewClass(questionType) {
-  switch (questionType) {
-    case `chooseTypeForEach`:
-      return ChooseTypeForEach;
-    case `chooseTypeForOne`:
-      return ChooseTypeForOne;
-    case `findType`:
-      return FindType;
-    default:
-      throw new Error(`Unknown question type ${questionType}`);
-  }
-}
-
-export default new GameScreen();
+export default GameScreen;
