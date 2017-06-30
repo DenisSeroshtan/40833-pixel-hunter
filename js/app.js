@@ -3,35 +3,31 @@ import GreetingScreen from './views/greeting/greetingScreen';
 import RulesScreen from './views/rules/rulesScreen';
 import NewGameScreen from './views/games/gameScreen';
 import StatsScreen from './views/stats/statsScreen';
+import Preloader from './views/preloader/preloader';
+import AbstractModel from './models/abstractModel';
+import controllerId from './enums/controllerId';
 
-const ControllerId = {
-  INTRO: ``,
-  GREETING: `greeting`,
-  RULES: `rules`,
-  GAME: `game`,
-  STATS: `stat`,
-};
 
 const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
   constructor() {
-    this.routes = {
-      [ControllerId.INTRO]: IntroScreen,
-      [ControllerId.GREETING]: GreetingScreen,
-      [ControllerId.RULES]: RulesScreen,
-      [ControllerId.GAME]: NewGameScreen,
-      [ControllerId.STATS]: StatsScreen
-    };
-
-    window.onhashchange = () => {
-      const {controller, state} = this._parseHashFromUrl();
-      this.changeController(controller, state);
-    };
+    this.model = new class extends AbstractModel {
+      get urlRead() {
+        return `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`;
+      }
+    }();
   }
+
   init() {
-    const {controller, state} = this._parseHashFromUrl();
-    this.changeController(controller, state);
+    this.showPreloader();
+    this.model.load()
+      .then((data) => this._setup(data))
+      .then((data) => {
+        const {controller, state} = this._parseHashFromUrl();
+        this.changeController(controller, state, data);
+      })
+      .catch(window.console.error);
   }
 
   _parseHashFromUrl() {
@@ -43,36 +39,56 @@ class App {
     };
   }
 
-  changeController(route = ``, state = ``) {
+  changeController(route = ``, state = ``, data = ``) {
     const Controller = this.routes[route];
     if (Controller) {
-      new Controller(state).init();
+      new Controller(data).init(state);
     }
   }
 
+  showPreloader() {
+    new Preloader().init();
+  }
+
   showIntro() {
-    location.hash = ControllerId.INTRO;
+    location.hash = controllerId.INTRO;
   }
 
   showGreeting() {
-    location.hash = ControllerId.GREETING;
+    location.hash = controllerId.GREETING;
   }
 
   showRules() {
-    location.hash = ControllerId.RULES;
+    location.hash = controllerId.RULES;
   }
 
   showGame() {
-    location.hash = ControllerId.GAME;
+    location.hash = controllerId.GAME;
   }
 
   showStats(state) {
     const encodeState = btoa(JSON.stringify(state));
-    location.hash = `${ControllerId.STATS}=${encodeState}`;
+    location.hash = `${controllerId.STATS}=${encodeState}`;
+  }
+
+  _setup(data) {
+    this.routes = {
+      [controllerId.INTRO]: IntroScreen,
+      [controllerId.GREETING]: GreetingScreen,
+      [controllerId.RULES]: RulesScreen,
+      [controllerId.GAME]: NewGameScreen,
+      [controllerId.STATS]: StatsScreen
+    };
+
+    window.onhashchange = () => {
+      const {controller, state} = this._parseHashFromUrl();
+      this.changeController(controller, state, data);
+    };
+
+    return data;
   }
 }
 
 const app = new App();
-app.init();
 
 export default app;

@@ -2,37 +2,14 @@ import ChooseTypeForEach from './chooseTypeForEachView.js';
 import ChooseTypeForOne from './chooseTypeForOneView.js';
 import FindType from './findTypeView.js';
 import App from '../../app.js';
-import {questions} from '../../data/data.js';
+import {getInitialState} from '../../data/data.js';
+import settings from '../../settings';
+import questionType from '../../enums/questionType';
+import resultType from '../../enums/resultType';
 
-export const MAX_QUESTIONS = 5;
-const MAX_LIVES = 3;
-export const TIME_FOR_QUESTION = 30;
-export const QUICK_ANSWER_TIME = 10;
-export const LATE_ANSWER_TIME = 20;
-
-const QuestionType = {
-  chooseTypeForEach: `chooseTypeForEach`,
-  chooseTypeForOne: `chooseTypeForOne`,
-  findType: `findType`
-};
-
-export const initialState = () => Object.freeze({
-  lives: 3,
-  question: 0,
-  time: 30,
-  stats: []
-});
-
-export const ResultType = Object.freeze({
-  CORRECT: `correct`,
-  WRONG: `wrong`,
-  FAST: `fast`,
-  SLOW: `slow`
-});
-
-export const setTime = (state, time) => {
-  if (isNaN(time) || time < 0 || time > TIME_FOR_QUESTION) {
-    throw new RangeError(`Incorrect time. Time should be between 0 – ${TIME_FOR_QUESTION}.`);
+const setTime = (state, time) => {
+  if (isNaN(time) || time < 0 || time > settings.TIME_FOR_QUESTION) {
+    throw new RangeError(`Incorrect time. Time should be between 0 – ${settings.TIME_FOR_QUESTION}.`);
   }
 
   const newState = Object.assign({}, state, {time});
@@ -40,13 +17,13 @@ export const setTime = (state, time) => {
   return newState;
 };
 
-export const setLives = (state, lives) => {
+const setLives = (state, lives) => {
   if (typeof state !== `object` || typeof lives !== `number` || typeof state.lives !== `number`) {
     throw new Error(`Parameters shouldn't be undefined or incorrect parameter type.`);
   }
 
   if (isNaN(lives) || lives < 0 || lives > 10) {
-    throw new RangeError(`Lives must be between 0...${MAX_LIVES}.`);
+    throw new RangeError(`Lives must be between 0...${settings.MAX_LIVES}.`);
   }
 
   const newState = Object.assign({}, state, {lives});
@@ -54,19 +31,19 @@ export const setLives = (state, lives) => {
   return newState;
 };
 
-class GameScreen {
-  constructor() {
-    this.questions = questions;
+export default class GameScreen {
+  constructor(data) {
+    this.questions = data;
     this.gameList = {
-      [QuestionType.chooseTypeForEach]: ChooseTypeForEach,
-      [QuestionType.chooseTypeForOne]: ChooseTypeForOne,
-      [QuestionType.findType]: FindType
+      [questionType.TWO_OF_TWO]: ChooseTypeForEach,
+      [questionType.TINDER_LIKE]: ChooseTypeForOne,
+      [questionType.ONE_OF_THREE]: FindType
     };
   }
 
   init() {
-    this.state = initialState();
-    this.view = this.createView(initialState(), this.getQuestion());
+    this.state = getInitialState();
+    this.view = this.createView(getInitialState(), this.getQuestion());
     this.view.show();
     this.startTimer();
   }
@@ -95,6 +72,7 @@ class GameScreen {
 
   createView(state) {
     const view = new this.gameList[this.getQuestion().type](state, this.getQuestion());
+
     view.onAnswer = (isCorrectAnswer) => {
       this.stopTimer();
       this.checkAnswer(isCorrectAnswer);
@@ -119,8 +97,8 @@ class GameScreen {
   }
 
   changeScreen(state) {
-    if (state.question < MAX_QUESTIONS && state.lives > 0) {
-      this.state = Object.assign({}, this.state, {time: initialState().time});
+    if (state.question < settings.MAX_QUESTIONS && state.lives > 0) {
+      this.state = Object.assign({}, this.state, {time: getInitialState().time});
 
       this.view = this.createView(this.state);
       this.view.show();
@@ -136,18 +114,18 @@ class GameScreen {
   }
 
   getResult(isCorrectAnswer) {
-    const differenceTime = initialState().timer - this.timer;
-    if (!isCorrectAnswer || this.timer === 0) {
-      return ResultType.WRONG;
+    let str;
+
+    if (!isCorrectAnswer) {
+      str = resultType.WRONG;
+    } else if (settings.TIME_FOR_QUESTION - this.state.time < settings.QUICK_ANSWER_TIME) {
+      str = resultType.FAST;
+    } else if (settings.TIME_FOR_QUESTION - this.state.time > settings.LATE_ANSWER_TIME) {
+      str = resultType.SLOW;
+    } else {
+      str = resultType.CORRECT;
     }
-    if (differenceTime < QUICK_ANSWER_TIME) {
-      return ResultType.FAST;
-    }
-    if (differenceTime > QUICK_ANSWER_TIME) {
-      return ResultType.SLOW;
-    }
-    return ResultType.CORRECT;
+
+    return str;
   }
 }
-
-export default GameScreen;
