@@ -83,7 +83,7 @@ export function calculateAspectRatioFit(img) {
   const imgWidth = img.naturalWidth;
   const imgHeight = img.naturalHeight;
 
-  if (imgWidth > imgHeight) {
+  if (imgWidth / imgHeight > parentWidth / parentHeight) {
     img.width = parentWidth;
   } else {
     img.height = parentHeight;

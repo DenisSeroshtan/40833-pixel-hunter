@@ -18,7 +18,7 @@ export default class ChooseTypeForOne extends AbstractView {
           <form class="game__content game__content--wide">
             ${this.question.answers.map((answer, i) =>
       `<div class="game__option">
-                <img src="${answer.image}" alt="Option ${i + 1}">
+                <img src="${answer.image.url}" alt="Option ${i + 1}">
                 <label class="game__answer game__answer--photo">
                   <input name="question1" type="radio" value="photo">
                   <span>Фото</span>
