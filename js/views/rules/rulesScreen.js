@@ -1,18 +1,17 @@
 import App from '../../app.js';
-import {renderScreen} from '../../utils/utils.js';
 import RulesView from './rulesView.js';
+import StatisticModel from '../../models/statsModel';
 
 class RulesScreen {
-  constructor() {
-    this.view = new RulesView();
-  }
-
   init() {
+    this.view = new RulesView();
+    this.view.show();
     this.view.onBackButtonClick = () => App.showGreeting();
 
-    this.view.onSubmitForm = () => App.showGame();
-
-    renderScreen(this.view);
+    this.view.onSubmitForm = (userName) => {
+      StatisticModel.name = userName;
+      App.showGame();
+    };
   }
 }
 

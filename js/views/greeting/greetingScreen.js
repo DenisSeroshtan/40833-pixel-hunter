@@ -1,16 +1,11 @@
 import App from '../../app.js';
-import {renderScreen} from '../../utils/utils.js';
 import GreetingView from './greetingView';
 
 class GreetingScreen {
-  constructor() {
-    this.view = new GreetingView();
-  }
-
   init() {
+    this.view = new GreetingView();
+    this.view.show();
     this.view.onNextButtonClick = () => App.showRules();
-
-    renderScreen(this.view);
   }
 }
 
