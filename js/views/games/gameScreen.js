@@ -114,18 +114,14 @@ export default class GameScreen {
   }
 
   getResult(isCorrectAnswer) {
-    let str;
-
     if (!isCorrectAnswer) {
-      str = resultType.WRONG;
+      return resultType.WRONG;
     } else if (settings.TIME_FOR_QUESTION - this.state.time < settings.QUICK_ANSWER_TIME) {
-      str = resultType.FAST;
+      return resultType.FAST;
     } else if (settings.TIME_FOR_QUESTION - this.state.time > settings.LATE_ANSWER_TIME) {
-      str = resultType.SLOW;
-    } else {
-      str = resultType.CORRECT;
+      return resultType.SLOW;
     }
 
-    return str;
+    return resultType.CORRECT;
   }
 }
