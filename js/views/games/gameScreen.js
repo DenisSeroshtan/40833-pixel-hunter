@@ -78,7 +78,7 @@ export default class GameScreen {
       this.checkAnswer(isCorrectAnswer);
     };
 
-    view.onBack = () => {
+    view.onBackButtonClick = () => {
       this.stopTimer();
       App.showGreeting();
     };

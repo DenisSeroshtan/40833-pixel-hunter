@@ -1,5 +1,5 @@
 import Points from '../enums/points';
-import AnswerTypes from '../enums/answerTypes';
+import AnswerType from '../enums/answerType';
 
 export const getInitialState = () => Object.freeze({
   lives: 3,
@@ -13,12 +13,12 @@ export const statsInfo = Object.freeze({
     'win': `Победа!`,
     'loss': `Поражение`
   },
-  'ratio': Points[AnswerTypes.correct],
+  'ratio': Points[AnswerType.CORRECT],
   'bonuses': [
     {
       'title': `Бонус за скорость:`,
       'type': `fast`,
-      'ratio': Points[AnswerTypes.fast]
+      'ratio': Points[AnswerType.FAST]
     },
     {
       'title': `Бонус за жизни:`,
@@ -28,7 +28,7 @@ export const statsInfo = Object.freeze({
     {
       'title': `Штраф за медлительность:`,
       'type': `slow`,
-      'ratio': Points[AnswerTypes.slow]
+      'ratio': Points[AnswerType.SLOW]
     }
   ]
 });

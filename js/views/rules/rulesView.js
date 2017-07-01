@@ -34,7 +34,7 @@ export default class RulesView extends AbstractView {
     });
     form.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      this.onSubmitForm(nameUserInput.value);
+      this.onSubmitForm();
     });
     backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();

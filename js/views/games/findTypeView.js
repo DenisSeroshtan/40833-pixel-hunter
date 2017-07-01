@@ -17,10 +17,10 @@ export default class findType extends AbstractView {
           <p class="game__task">${this.question.question}</p>
           <form class="game__content game__content--triple">
             ${this.question.answers.map((answer, i) =>
-      `<div class="game__option">
-                <img src="${answer.image.url}" alt="Option ${i + 1}">
+              `<div class="game__option" data-index="${i}">
+                <img src="${answer.image.url}" alt="Option ${i + 1}"/>
               </div>`).join(``)
-      }
+            }
           </form>
           <div class="stats">
             ${levelStats(this.state.stats)}
@@ -31,13 +31,15 @@ export default class findType extends AbstractView {
 
   bind() {
     this.timerNode = this.element.querySelector(`.game__timer`);
+    const options = this.element.querySelectorAll(`.game__option`);
 
-    const gameOptions = this.element.querySelectorAll(`.game__option`);
-    for (const option of gameOptions) {
-      option.addEventListener(`click`, () => {
-        this.onAnswer(false);
-      });
-    }
+    const clickOptionHandler = (evt) => {
+      this.onAnswer(this.question.answers[+evt.target.dataset.index].type === `photo`);
+    };
+
+    Array.from(options).forEach((item) => {
+      item.addEventListener(`click`, clickOptionHandler);
+    });
 
     const backButton = this.element.querySelector(`.header__back`);
     backButton.addEventListener(`click`, () => {

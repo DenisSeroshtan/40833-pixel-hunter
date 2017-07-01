@@ -3,7 +3,7 @@ import AbstractModel from './abstractModel';
 export default new class extends AbstractModel {
   constructor() {
     super();
-    this.name = `UserName`;
+    this.name = `id40833`;
   }
 
   get urlRead() {

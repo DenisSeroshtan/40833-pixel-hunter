@@ -1,8 +1,9 @@
-import AnswerTypes from './answerTypes';
+import AnswerType from './answerType';
 
 export default {
-  [AnswerTypes.correct]: 100,
-  [AnswerTypes.fast]: 50,
-  [AnswerTypes.slow]: -50,
-  [AnswerTypes.wrong]: 0
+  [AnswerType.CORRECT]: 100,
+  [AnswerType.FAST]: 50,
+  [AnswerType.SLOW]: -50,
+  [AnswerType.WRONG]: 0,
+  heart: 50
 };

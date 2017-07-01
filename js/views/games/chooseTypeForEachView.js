@@ -17,18 +17,18 @@ export default class ChooseTypeForEach extends AbstractView {
         <p class="game__task">${this.question.question}</p>
         <form class="game__content">
           ${this.question.answers.map((answer, i) =>
-      `<div class="game__option">
-            <img src="${answer.image.url}" alt="Option ${i + 1}">
-            <label class="game__answer game__answer--photo">
-              <input name="question${i}" type="radio" value="photo">
-              <span>Фото</span>
-            </label>
-            <label class="game__answer game__answer--paint">
-              <input name="question${i}" type="radio" value="paint">
-              <span>Рисунок</span>
-            </label>
-            </div>`).join(``)
-      }
+            `<div class="game__option">
+              <img src="${answer.image.url}" alt="Option ${i + 1}"/>
+              <label class="game__answer game__answer--photo">
+                <input name="question${i + 1}" type="radio" value="photo"/>
+                <span>Фото</span>
+              </label>
+              <label class="game__answer game__answer--paint">
+                <input name="question${i + 1}" type="radio" value="painting"/>
+                <span>Рисунок</span>
+              </label>
+              </div>`).join(``)
+          }
         </form>
         <div class="stats">
           ${levelStats(this.state.stats)}
@@ -40,12 +40,25 @@ export default class ChooseTypeForEach extends AbstractView {
   bind() {
     this.timerNode = this.element.querySelector(`.game__timer`);
 
-    this.form = this.element.querySelector(`.game__content`);
-    this.form.addEventListener(`change`, () => {
-      const checkedAnswers = this.form.querySelectorAll(`input[type=radio]:checked`);
-      if (checkedAnswers.length === 2) {
-        this.onAnswer(false);
+    const gameContentForm = this.element.querySelector(`.game__content`);
+    const radioInputs = gameContentForm.querySelectorAll(`input[type='radio']`);
+
+    const changeRadioHandler = (evt) => {
+      evt.preventDefault();
+
+      const question1Group = gameContentForm.querySelector(`input[name="question1"]:checked`);
+      const question2Group = gameContentForm.querySelector(`input[name="question2"]:checked`);
+
+      if (question1Group && question2Group) {
+        this.onAnswer(question1Group.value === this.question.answers[0].type &&
+          question2Group.value === this.question.answers[1].type);
       }
+    };
+
+    Array.from(radioInputs).forEach((item) => {
+      item.addEventListener(`change`, (evt) => {
+        changeRadioHandler(evt);
+      });
     });
 
     const backButton = this.element.querySelector(`.header__back`);
