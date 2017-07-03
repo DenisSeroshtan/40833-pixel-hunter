@@ -3,9 +3,9 @@ import GreetingView from './greetingView';
 
 class GreetingScreen {
   init() {
-    this.view = new GreetingView();
-    this.view.show();
-    this.view.onNextButtonClick = () => App.showRules();
+    this._view = new GreetingView();
+    this._view.onNextButtonClick = () => App.showRules();
+    this._view.show();
   }
 }
 

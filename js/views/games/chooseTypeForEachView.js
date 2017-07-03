@@ -6,17 +6,17 @@ import {changeAspectRatioOnLoad} from '../../utils/utils.js';
 export default class ChooseTypeForEach extends AbstractView {
   constructor(state, question) {
     super();
-    this.question = question;
+    this._question = question;
 
-    this.state = state;
+    this._state = state;
   }
   get template() {
     return `
-      ${header(this.state)}
+      ${header(this._state)}
       <div class="game">
-        <p class="game__task">${this.question.question}</p>
+        <p class="game__task">${this._question.question}</p>
         <form class="game__content">
-          ${this.question.answers.map((answer, i) =>
+          ${this._question.answers.map((answer, i) =>
             `<div class="game__option">
               <img src="${answer.image.url}" alt="Option ${i + 1}"/>
               <label class="game__answer game__answer--photo">
@@ -31,7 +31,7 @@ export default class ChooseTypeForEach extends AbstractView {
           }
         </form>
         <div class="stats">
-          ${levelStats(this.state.stats)}
+          ${levelStats(this._state.stats)}
         </div>
       </div>
       `.trim();
@@ -50,8 +50,8 @@ export default class ChooseTypeForEach extends AbstractView {
       const question2Group = gameContentForm.querySelector(`input[name="question2"]:checked`);
 
       if (question1Group && question2Group) {
-        this.onAnswer(question1Group.value === this.question.answers[0].type &&
-          question2Group.value === this.question.answers[1].type);
+        this.onAnswer(question1Group.value === this._question.answers[0].type &&
+          question2Group.value === this._question.answers[1].type);
       }
     };
 

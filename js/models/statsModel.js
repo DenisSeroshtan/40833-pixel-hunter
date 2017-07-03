@@ -1,9 +1,10 @@
 import AbstractModel from './abstractModel';
+import settings from '../settings';
 
-export default new class extends AbstractModel {
+class StatsModel extends AbstractModel {
   constructor() {
     super();
-    this.name = `id40833`;
+    this.name = settings.USER_NAME;
   }
 
   get urlRead() {
@@ -13,4 +14,6 @@ export default new class extends AbstractModel {
   get urlWrite() {
     return `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/stats/${this.name}`;
   }
-}();
+}
+
+export default StatsModel;

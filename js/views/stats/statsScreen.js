@@ -3,17 +3,17 @@ import StatsView from './statsView.js';
 import StatsModel from '../../models/statsModel';
 
 class StatsScreen {
-  constructor(data) {
-    this.data = data;
+  constructor() {
+    this._model = new StatsModel();
   }
   init(state) {
-    this.state = state;
+    this._state = state;
 
-    StatsModel.load()
+    this._model.load()
       .then((data) => {
-        this.view = new StatsView(state, data);
-        this.view.show();
-        this.view.onBackButtonClick = () => App.showGreeting();
+        this._view = new StatsView(this._state, data);
+        this._view.onBackButtonClick = () => App.showGreeting();
+        this._view.show();
       });
   }
 }

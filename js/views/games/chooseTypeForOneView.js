@@ -6,17 +6,17 @@ import {changeAspectRatioOnLoad} from '../../utils/utils.js';
 export default class ChooseTypeForOne extends AbstractView {
   constructor(state, question) {
     super();
-    this.question = question;
+    this._question = question;
 
-    this.state = state;
+    this._state = state;
   }
   get template() {
     return `
-      ${header(this.state)}
+      ${header(this._state)}
         <div class="game">
-          <p class="game__task">${this.question.question}</p>
+          <p class="game__task">${this._question.question}</p>
           <form class="game__content game__content--wide">
-            ${this.question.answers.map((answer, i) =>
+            ${this._question.answers.map((answer, i) =>
               `<div class="game__option">
                 <img src="${answer.image.url}" alt="Option ${i + 1}"/>
                 <label class="game__answer game__answer--photo">
@@ -31,7 +31,7 @@ export default class ChooseTypeForOne extends AbstractView {
             }
           </form>
           <div class="stats">
-            ${levelStats(this.state.stats)}
+            ${levelStats(this._state.stats)}
           </div>
         </div>
       `.trim();
@@ -50,7 +50,7 @@ export default class ChooseTypeForOne extends AbstractView {
 
     const changeRadioHandler = () => {
       const radioInput = gameContentForm.querySelector(`input[name="question1"]:checked`);
-      this.onAnswer(radioInput.value === this.question.answers[0].type);
+      this.onAnswer(radioInput.value === this._question.answers[0].type);
     };
 
     Array.from(radioInputs).forEach((item) => {

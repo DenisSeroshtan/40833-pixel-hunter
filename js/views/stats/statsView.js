@@ -2,7 +2,7 @@ import AbstractView from '../abstractView.js';
 import header from '../../blocks/header.js';
 import Points from '../../enums/points';
 import AnswerType from '../../enums/answerType';
-import {getTotalPoints, getRightPoints, getPointCount} from '../../data/points';
+import {getTotalPoints, getRightPoints, getPointCount} from '../../utils/utils';
 import {statsInfo} from '../../data/data';
 import levelStats from '../../blocks/levelStats';
 
@@ -68,15 +68,15 @@ const createTableResult = (game, index) => {
 export default class StatsView extends AbstractView {
   constructor(state, data) {
     super();
-    this.state = state;
-    this.data = data;
+    this._state = state;
+    this._data = data;
   }
   get template() {
     return `
     ${header()}
     <div class="result">
-      <h1>${this.state.lives > 0 ? statsInfo.title.win : statsInfo.title.loss}</h1>
-      ${this.data.reduce((content, game, index) => {
+      <h1>${this._state.lives > 0 ? statsInfo.title.win : statsInfo.title.loss}</h1>
+      ${this._data.reduce((content, game, index) => {
         return content + createTableResult(game, index + 1);
       }, ``)}
     </div>`;

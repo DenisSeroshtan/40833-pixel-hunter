@@ -1,4 +1,4 @@
-import DefaultAdapter from '../data/defaultAdapter';
+import DefaultAdapter from '../adapters/defaultAdapter';
 
 const defaultAdapter = new class extends DefaultAdapter {}();
 
@@ -11,15 +11,15 @@ export default class AbstractModel {
     throw new Error(`Abstract method. Define the URL for model.`);
   }
 
-  load(adapter = defaultAdapter) {
+  load() {
     return fetch(this.urlRead)
       .then((response) => response.json())
-      .then(adapter.preprocess);
+      .then(defaultAdapter.preprocess);
   }
 
-  send(data, adapter = defaultAdapter) {
+  send(data) {
     const requestSettings = {
-      body: adapter.toServer(data),
+      body: defaultAdapter.toServer(data),
       headers: {
         'Content-Type': `application/json`
       },

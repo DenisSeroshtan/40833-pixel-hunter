@@ -1,68 +1,61 @@
-export function setLivesCount(state, isAnswerCorrect) {
-  if (state.lives < 0) {
-    throw new RangeError(`Can't set negatives lives`);
+import settings from '../settings';
+import ResultType from '../enums/resultType';
+import Points from '../enums/points';
+
+export function setLives(state, lives) {
+  if (isNaN(lives) || lives < 0 || lives > settings.MAX_LIVES) {
+    throw new RangeError(`Lives must be between 0...${settings.MAX_LIVES}.`);
   }
-  if (isAnswerCorrect) {
-    return state;
-  } else {
-    return Object.assign({}, state, {lives: state.lives - 1});
+
+  return Object.assign({}, state, {lives});
+}
+
+export function setTime(state, time) {
+  if (isNaN(time) || time < 0 || time > settings.TIME_FOR_QUESTION) {
+    throw new RangeError(`Time should be between 0 – ${settings.TIME_FOR_QUESTION}.`);
   }
+
+  return Object.assign({}, state, {time});
 }
 
-export function checkAnswers(state, answer) {
-  for (let i = 0; i < state.answers.length; i++) {
-    if (answer.answer[i] !== state.answers[i].type) {
-      return false;
-    }
+export function getAnswerType(isCorrectAnswer, time) {
+  if (!isCorrectAnswer) {
+    return ResultType.WRONG;
+  } else if (settings.TIME_FOR_QUESTION - time < settings.QUICK_ANSWER_TIME) {
+    return ResultType.FAST;
+  } else if (settings.TIME_FOR_QUESTION - time > settings.LATE_ANSWER_TIME) {
+    return ResultType.SLOW;
   }
-  return true;
+
+  return ResultType.CORRECT;
 }
 
-export function calcLivesPoints(state) {
-  return state.lives * 50;
-}
+export const getPointCount = (stats, type) => stats.filter((s) => {
+  return s === type;
+}).length;
 
-export function calcAnswersPoints(state, answerType) {
-  const points = () => {
-    switch (answerType) {
-      case `correct`:
-        return +100;
-      case `fast`:
-        return +50;
-      case `slow`:
-        return -50;
-      default:
-        throw new Error(`Nothing to return. Answer type is ${answerType}`);
-    }
-  };
+export const getPointsByAnswerType = (type, stats) => {
+  const countStatType = getPointCount(stats, type);
 
-  return points() + calcLivesPoints(state);
-}
+  return countStatType * Points[type];
+};
 
-export function generateGameStat(state, isAnswerCorrect, time) {
-  const newGameStats = state.gameStat.slice();
-  const answerParams = () => {
-    if (isAnswerCorrect) {
-      if (time < 10) {
-        return `fast`;
-      }
-      if (time > 20 && time <= 30) {
-        return `slow`;
-      }
-      if (time >= 10 && time <= 20) {
-        return `correct`;
-      }
-      if (time === -1) {
-        return `wrong`;
-      }
-    }
-    return `wrong`;
-  };
+export const getPointByLives = (lives) => {
+  return lives * Points.heart;
+};
 
-  newGameStats.push(answerParams());
+export const getRightPoints = (stats) => {
+  return stats.filter((stat) => stat !== ResultType.WRONG).length * Points[ResultType.CORRECT];
+};
 
-  return {gameStat: newGameStats};
-}
+export const getTotalPoints = ({lives, stats}) => {
+  const sumFastAnswerPoints = getPointsByAnswerType(ResultType.FAST, stats);
+  const sumSlowAnswerPoints = getPointsByAnswerType(ResultType.SLOW, stats);
+  const sumLivesPoints = getPointByLives(lives);
+  const sumRightPoints = getRightPoints(stats);
+
+  return sumFastAnswerPoints + sumSlowAnswerPoints + sumLivesPoints + sumRightPoints;
+};
 
 export function createElement(string) {
   const template = document.createElement(`div`);

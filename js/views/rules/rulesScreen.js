@@ -3,13 +3,12 @@ import RulesView from './rulesView.js';
 
 class RulesScreen {
   init() {
-    this.view = new RulesView();
-    this.view.show();
-    this.view.onBackButtonClick = () => App.showGreeting();
-
-    this.view.onSubmitForm = () => {
+    this._view = new RulesView();
+    this._view.onSubmitForm = () => {
       App.showGame();
     };
+    this._view.show();
+    this._view.onBackButtonClick = () => App.showGreeting();
   }
 }
 

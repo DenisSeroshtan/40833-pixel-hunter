@@ -2,6 +2,7 @@ import PreloaderView from './preloaderView';
 
 export default class {
   init() {
-    this.view = new PreloaderView().show();
+    this._view = new PreloaderView();
+    this._view.show();
   }
 }

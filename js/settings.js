@@ -1,4 +1,5 @@
 export default {
+  USER_NAME: `id40833`,
   MAX_QUESTIONS: 10,
   MAX_LIVES: 3,
   TIME_FOR_QUESTION: 30,
