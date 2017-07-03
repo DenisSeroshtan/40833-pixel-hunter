@@ -41,10 +41,6 @@ class App {
     new Preloader().init();
   }
 
-  showIntro() {
-    location.hash = controllerId.INTRO;
-  }
-
   showGreeting() {
     location.hash = controllerId.GREETING;
   }

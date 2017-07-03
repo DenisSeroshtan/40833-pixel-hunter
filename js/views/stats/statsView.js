@@ -20,7 +20,7 @@ const createBonus = (bonusCount, {title, type}) => {
 const countPoints = ({lives, stats}) => {
   const result = new Map();
   result.set(`heart`, lives);
-  for (let type of Object.keys(AnswerType)) {
+  for (const type of Object.keys(AnswerType)) {
     result.set(type, getPointCount(stats, type));
   }
 

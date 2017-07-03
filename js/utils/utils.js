@@ -84,9 +84,9 @@ export function calculateAspectRatioFit(img) {
 }
 
 export function changeAspectRatioOnLoad(images) {
-  for (let i = 0; i < images.length; i++) {
-    images[i].addEventListener(`load`, (event) =>{
-      calculateAspectRatioFit(images[i]);
+  for (const image of images) {
+    image.addEventListener(`load`, (event) => {
+      calculateAspectRatioFit(image);
     });
   }
 }
