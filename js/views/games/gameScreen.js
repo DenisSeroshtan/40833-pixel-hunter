@@ -5,36 +5,12 @@ import App from '../../app.js';
 import {getInitialState} from '../../data/data.js';
 import settings from '../../settings';
 import questionType from '../../enums/questionType';
-import resultType from '../../enums/resultType';
-
-const setTime = (state, time) => {
-  if (isNaN(time) || time < 0 || time > settings.TIME_FOR_QUESTION) {
-    throw new RangeError(`Incorrect time. Time should be between 0 – ${settings.TIME_FOR_QUESTION}.`);
-  }
-
-  const newState = Object.assign({}, state, {time});
-
-  return newState;
-};
-
-const setLives = (state, lives) => {
-  if (typeof state !== `object` || typeof lives !== `number` || typeof state.lives !== `number`) {
-    throw new Error(`Parameters shouldn't be undefined or incorrect parameter type.`);
-  }
-
-  if (isNaN(lives) || lives < 0 || lives > 10) {
-    throw new RangeError(`Lives must be between 0...${settings.MAX_LIVES}.`);
-  }
-
-  const newState = Object.assign({}, state, {lives});
-
-  return newState;
-};
+import {setLives, setTime, getAnswerType} from '../../utils/utils';
 
 export default class GameScreen {
   constructor(data) {
-    this.questions = data;
-    this.gameList = {
+    this._questions = data;
+    this._gameList = {
       [questionType.TWO_OF_TWO]: ChooseTypeForEach,
       [questionType.TINDER_LIKE]: ChooseTypeForOne,
       [questionType.ONE_OF_THREE]: FindType
@@ -42,90 +18,78 @@ export default class GameScreen {
   }
 
   init() {
-    this.state = getInitialState();
-    this.view = this.createView(getInitialState(), this.getQuestion());
-    this.view.show();
-    this.startTimer();
+    this._state = getInitialState();
+    this._view = this._createView(getInitialState(), this._getQuestion());
+    this._view.show();
+    this._startTimer();
   }
 
-  startTimer() {
-    this.timer = setInterval(() => {
-      this.state = setTime(this.state, this.state.time - 1);
-      this.view.updateTimer(this.state.time);
+  _startTimer() {
+    this._timer = setInterval(() => {
+      this._state = setTime(this._state, this._state.time - 1);
+      this._view.updateTimer(this._state.time);
 
-      if (this.state.time <= 0) {
-        this.stopTimer();
+      if (this._state.time <= 0) {
+        this._stopTimer();
 
-        this.checkAnswer(false);
+        this._checkAnswer(false);
       }
 
     }, 1000);
   }
 
-  stopTimer() {
-    if (!this.timer) {
+  _stopTimer() {
+    if (!this._timer) {
       return;
     }
 
-    clearInterval(this.timer);
+    clearInterval(this._timer);
   }
 
-  createView(state) {
-    const view = new this.gameList[this.getQuestion().type](state, this.getQuestion());
+  _createView(state) {
+    const view = new this._gameList[this._getQuestion().type](state, this._getQuestion());
 
     view.onAnswer = (isCorrectAnswer) => {
-      this.stopTimer();
-      this.checkAnswer(isCorrectAnswer);
+      this._stopTimer();
+      this._checkAnswer(isCorrectAnswer);
     };
 
-    view.onBack = () => {
-      this.stopTimer();
+    view.onBackButtonClick = () => {
+      this._stopTimer();
       App.showGreeting();
     };
 
     return view;
   }
 
-  checkAnswer(isCorrectAnswer) {
+  _checkAnswer(isCorrectAnswer) {
     if (!isCorrectAnswer) {
-      this.state = setLives(this.state, this.state.lives - 1);
+      this._state = setLives(this._state, this._state.lives - 1);
     }
 
-    this.state.stats.push(this.getResult(isCorrectAnswer));
-    this.state.question++;
-    this.changeScreen(this.state);
+    this._state.stats.push(this._getResult(isCorrectAnswer, this._state.time));
+    this._state.question++;
+    this._changeScreen(this._state);
   }
 
-  changeScreen(state) {
+  _changeScreen(state) {
     if (state.question < settings.MAX_QUESTIONS && state.lives > 0) {
-      this.state = Object.assign({}, this.state, {time: getInitialState().time});
+      this._state = Object.assign({}, this._state, {time: getInitialState().time});
 
-      this.view = this.createView(this.state);
-      this.view.show();
-      this.startTimer();
+      this._view = this._createView(this._state);
+      this._view.show();
+      this._startTimer();
 
     } else {
-      App.showStats(this.state);
+      App.showStats(this._state);
     }
   }
 
-  getQuestion() {
-    return this.questions[this.state.question];
+  _getQuestion() {
+    return this._questions[this._state.question];
   }
 
-  getResult(isCorrectAnswer) {
-    let str;
-
-    if (!isCorrectAnswer) {
-      str = resultType.WRONG;
-    } else if (settings.TIME_FOR_QUESTION - this.state.time < settings.QUICK_ANSWER_TIME) {
-      str = resultType.FAST;
-    } else if (settings.TIME_FOR_QUESTION - this.state.time > settings.LATE_ANSWER_TIME) {
-      str = resultType.SLOW;
-    } else {
-      str = resultType.CORRECT;
-    }
-
-    return str;
+  _getResult(isCorrectAnswer, time) {
+    return getAnswerType(isCorrectAnswer, time);
   }
 }

@@ -1,18 +1,14 @@
 import App from '../../app.js';
-import {renderScreen} from '../../utils/utils.js';
 import RulesView from './rulesView.js';
 
 class RulesScreen {
-  constructor() {
-    this.view = new RulesView();
-  }
-
   init() {
-    this.view.onBackButtonClick = () => App.showGreeting();
-
-    this.view.onSubmitForm = () => App.showGame();
-
-    renderScreen(this.view);
+    this._view = new RulesView();
+    this._view.onSubmitForm = () => {
+      App.showGame();
+    };
+    this._view.show();
+    this._view.onBackButtonClick = () => App.showGreeting();
   }
 }
 

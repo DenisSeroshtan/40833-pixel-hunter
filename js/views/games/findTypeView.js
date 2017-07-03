@@ -6,24 +6,24 @@ import {changeAspectRatioOnLoad} from '../../utils/utils.js';
 export default class findType extends AbstractView {
   constructor(state, question) {
     super();
-    this.question = question;
+    this._question = question;
 
-    this.state = state;
+    this._state = state;
   }
   get template() {
     return `
-      ${header(this.state)}
+      ${header(this._state)}
         <div class="game">
-          <p class="game__task">${this.question.question}</p>
+          <p class="game__task">${this._question.question}</p>
           <form class="game__content game__content--triple">
-            ${this.question.answers.map((answer, i) =>
-      `<div class="game__option">
-                <img src="${answer.image.url}" alt="Option ${i + 1}">
+            ${this._question.answers.map((answer, i) =>
+              `<div class="game__option" data-index="${i}">
+                <img src="${answer.image.url}" alt="Option ${i + 1}"/>
               </div>`).join(``)
-      }
+            }
           </form>
           <div class="stats">
-            ${levelStats(this.state.stats)}
+            ${levelStats(this._state.stats)}
           </div>
         </div>
       `.trim();
@@ -31,13 +31,15 @@ export default class findType extends AbstractView {
 
   bind() {
     this.timerNode = this.element.querySelector(`.game__timer`);
+    const options = this.element.querySelectorAll(`.game__option`);
 
-    const gameOptions = this.element.querySelectorAll(`.game__option`);
-    for (const option of gameOptions) {
-      option.addEventListener(`click`, () => {
-        this.onAnswer(false);
-      });
-    }
+    const clickOptionHandler = (evt) => {
+      this.onAnswer(this._question.answers[+evt.target.dataset.index].type === `photo`);
+    };
+
+    Array.from(options).forEach((item) => {
+      item.addEventListener(`click`, clickOptionHandler);
+    });
 
     const backButton = this.element.querySelector(`.header__back`);
     backButton.addEventListener(`click`, () => {

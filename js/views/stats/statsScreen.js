@@ -1,14 +1,20 @@
 import App from '../../app.js';
-import {renderScreen} from '../../utils/utils.js';
 import StatsView from './statsView.js';
+import StatsModel from '../../models/statsModel';
 
 class StatsScreen {
-
+  constructor() {
+    this._model = new StatsModel();
+  }
   init(state) {
-    this.view = new StatsView(state);
-    this.view.onBackButtonClick = () => App.showGreeting();
+    this._state = state;
 
-    renderScreen(this.view);
+    this._model.load()
+      .then((data) => {
+        this._view = new StatsView(this._state, data);
+        this._view.onBackButtonClick = () => App.showGreeting();
+        this._view.show();
+      });
   }
 }
 

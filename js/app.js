@@ -4,7 +4,8 @@ import RulesScreen from './views/rules/rulesScreen';
 import NewGameScreen from './views/games/gameScreen';
 import StatsScreen from './views/stats/statsScreen';
 import Preloader from './views/preloader/preloader';
-import AbstractModel from './models/abstractModel';
+import StatsModel from './models/statsModel';
+import GameModel from './models/gameModel';
 import controllerId from './enums/controllerId';
 
 
@@ -12,16 +13,13 @@ const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
   constructor() {
-    this.model = new class extends AbstractModel {
-      get urlRead() {
-        return `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`;
-      }
-    }();
+    this._gameModel = new GameModel();
+    this._statsModel = new StatsModel();
   }
 
   init() {
     this.showPreloader();
-    this.model.load()
+    this._gameModel.load()
       .then((data) => this._setup(data))
       .then((data) => {
         const {controller, state} = this._parseHashFromUrl();
@@ -30,19 +28,12 @@ class App {
       .catch(window.console.error);
   }
 
-  _parseHashFromUrl() {
-    const hash = location.hash.split(`=`);
-    const [controller, hashValue] = hash;
-    return {
-      controller: getControllerIdFromHash(controller),
-      state: hashValue ? JSON.parse(atob(hashValue)) : hashValue
-    };
-  }
-
-  changeController(route = ``, state = ``, data = ``) {
-    const Controller = this.routes[route];
+  changeController(route, state, data) {
+    const Controller = this._routes[route];
     if (Controller) {
       new Controller(data).init(state);
+    } else {
+      throw new Error(`This route ${route} is not defined.`);
     }
   }
 
@@ -67,12 +58,25 @@ class App {
   }
 
   showStats(state) {
-    const encodeState = btoa(JSON.stringify(state));
-    location.hash = `${controllerId.STATS}=${encodeState}`;
+    this._statsModel.send(state)
+      .then(() => {
+        const encodeState = btoa(JSON.stringify(state));
+        location.hash = `${controllerId.STATS}=${encodeState}`;
+      })
+      .catch(window.console.error);
+  }
+
+  _parseHashFromUrl() {
+    const hash = location.hash.split(`=`);
+    const [controller, hashValue] = hash;
+    return {
+      controller: getControllerIdFromHash(controller),
+      state: hashValue ? JSON.parse(atob(hashValue)) : null
+    };
   }
 
   _setup(data) {
-    this.routes = {
+    this._routes = {
       [controllerId.INTRO]: IntroScreen,
       [controllerId.GREETING]: GreetingScreen,
       [controllerId.RULES]: RulesScreen,
